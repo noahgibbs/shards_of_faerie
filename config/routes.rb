@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   get 'top/index'
-  get 'top/game'
+
+  get 'game/entwined'
 
   root "top#index"
 
