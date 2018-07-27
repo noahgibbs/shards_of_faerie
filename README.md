@@ -1,24 +1,14 @@
-# README
+# Shards of Faerie
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Do you ever circle around an idea, prototyping things around it, over
+and over?
 
-Things you may want to cover:
+I keep asking myself, "what would a MUD look like in a modern web
+environment?" What would it be? What would it do? I don't mean a
+literal telnet-using text-only game. But what's the equivalent?
 
-* Ruby version
+## Requirements
 
-* System dependencies
+This is an ActionCable experiment right now. So you need ActionCable
+set up.
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
