@@ -19,6 +19,14 @@
     <p class="alert"><%= alert %></p>
 
 <div class="container">
+  <div class="row"> <div class="col-md">
+    <%= yield %>
+  </div></div>
+
+  <div class="row"> <div class="col-md">
+    <p class="chatarea"></p>
+  </div></div>
+
   <div class="row">
     <div class="col-sm">
       One of three columns
@@ -31,9 +39,6 @@
     </div>
   </div>
 
-  <div class="row"> <div class="col-md">
-    <%= yield %>
-  </div></div>
 </div>
   </body>
 </html>
