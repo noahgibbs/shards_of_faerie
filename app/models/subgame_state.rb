@@ -1,0 +1,2 @@
+class SubgameState < ApplicationRecord
+end
