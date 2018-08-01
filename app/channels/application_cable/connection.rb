@@ -14,7 +14,7 @@ module ApplicationCable
         verified_user
       else
         #User.new  # Anonymous user
-        "guest"  # Allow guest logins
+        "guest"  # TODO: fix guest logins, figure out how to assign a new user object to guests in a usable way...
         #reject_unauthorized_connection
       end
     end
