@@ -1,0 +1,19 @@
+class SubgameConnection
+  def initialize(channel)
+    @channel = channel
+  end
+
+  def receive(data)
+  end
+
+  def send(data)
+    @channel.send_single(data)
+  end
+
+  def replace_html(elt_selector, new_content)
+    send(action: "replace", content: new_content)
+  end
+end
+
+require "subgames/title"
+require "subgames/entwined"

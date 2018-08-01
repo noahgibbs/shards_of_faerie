@@ -1,0 +1,2 @@
+class EntwinedSubgameConnection < SubgameConnection
+end

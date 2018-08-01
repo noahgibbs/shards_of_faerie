@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   get 'top/index'
 
-  get 'game/entwined'
+  get '/game' => 'game#index'
 
   root "top#index"
 

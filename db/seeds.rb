@@ -14,4 +14,6 @@
 # now want to be at? This is a half-assed attempt to update, not just
 # create, for that reason.
 
+# We want to make sure we have the appropriate hardcoded subgames available.
+title = Subgame.find_or_create_by(:name => "Title")
 entwined = Subgame.find_or_create_by(:name => "Entwined")

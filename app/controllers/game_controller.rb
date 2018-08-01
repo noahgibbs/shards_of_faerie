@@ -1,4 +1,4 @@
 class GameController < ApplicationController
-  def entwined
+  def index
   end
 end
