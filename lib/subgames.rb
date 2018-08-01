@@ -11,7 +11,7 @@ class SubgameConnection
   end
 
   def replace_html(elt_selector, new_content)
-    send(action: "replace", content: new_content)
+    send(action: "replace", selector: elt_selector, content: new_content)
   end
 end
 

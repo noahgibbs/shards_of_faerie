@@ -30,7 +30,7 @@ class PlayerActionChannel < ApplicationCable::Channel
   end
 
   def send_single(data)
-    broadcast_to current_user, data
+    self.class.broadcast_to current_user, data
   end
 
   def unsubscribed
