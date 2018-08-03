@@ -1,6 +1,6 @@
 $(function() {
-    $(".action-button").click(function() {
+    $(".client-area").on("click", ".action-button", function() {
         var act = $(this).attr("click-action");
-        App.player_action.send({ action: act });
+        App.player_action.send({ gameaction: act });
     });
 });
