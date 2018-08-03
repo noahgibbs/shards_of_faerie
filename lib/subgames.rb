@@ -15,5 +15,5 @@ class SubgameConnection
   end
 end
 
-require "subgames/title"
-require "subgames/entwined"
+require "title"
+require "entwined"
