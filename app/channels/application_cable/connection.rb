@@ -4,7 +4,7 @@ module ApplicationCable
 
     def connect
       self.current_user = find_verified_user
-      #logger.add_tags 'ActionCable', current_user.name
+      logger.add_tags('ActionCable', self.current_user.name) if self.current_user
     end
 
     private
@@ -13,9 +13,7 @@ module ApplicationCable
       if verified_user = User.find_by(id: cookies.signed['user.id'])
         verified_user
       else
-        #User.new  # Anonymous user
-        "guest"  # TODO: fix guest logins, figure out how to assign a new user object to guests in a usable way...
-        #reject_unauthorized_connection
+        raise "No guest logins yet!"
       end
     end
   end
