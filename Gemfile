@@ -12,6 +12,9 @@ gem 'devise'
 # Used in channels for HTML template output
 gem 'erubis'
 
+# Used by Entwined for processing game Markdown
+gem 'redcarpet'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
