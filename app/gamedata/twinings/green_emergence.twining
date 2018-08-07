@@ -1,0 +1,65 @@
+<tw-storydata name="Green Emergence" startnode="1" creator="Twine" ifid="7B4D239A-F328-469C-AA8E-A83F2A53DDD0" zoom="1" format="Snowman" format-version="1.3.0" options="" hidden>
+
+<style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+.green {
+  color: green;
+};
+</style>
+
+<script role="script" id="twine-user-script" type="text/twine-javascript">
+// Leftover JavaScript, still here as a placeholder
+window.jQuery("#toolbar .saveButton").on("click", function() {
+});
+</script>
+
+<tw-passagedata pid="1" name="Awareness" tags="" position="412,200" size="100,100">
+You're floating. <span class='green'>Everything is green.</span>
+
+[[Where am I?]] [[Who am I?]]
+[[I think I know who I am]]
+</tw-passagedata>
+
+<tw-passagedata pid="2" name="Where am I?" tags="" position="330,349" size="100,100">
+You're not sure. <span class='green'>You're floating in greenness.</span>
+
+[[Go back to floating-&gt;Awareness]]
+</tw-passagedata>
+
+<tw-passagedata pid="3" name="Who am I?" tags="" position="487,350" size="100,100">
+You're not sure. <span class='green'>You're still floating in greenness.</span>
+
+[[Go back to floating-&gt;Awareness]]
+</tw-passagedata>
+
+<tw-passagedata pid="4" name="I think I know who I am" tags="">
+Everything is hard to remember when <span class='green'>it's green</span>.
+
+But maybe you're coming out of the green, a bit?
+
+[[No, everything is still green-&gt;Awareness]]
+[[Yes, the green is starting to recede-&gt;Emergence]]
+</tw-passagedata>
+
+<tw-passagedata pid="5" name="Emergence" tags="">
+
+The green was feeling very bright, and now it's dimming.
+
+Other colors exist now, up ahead - grays, browns and a spot of twinkling blue.
+
+[[Retreat from the colors-&gt;Awareness]]
+
+[[Follow the colors-&gt;A Small Room]]
+</tw-passagedata>
+
+<tw-passagedata pid="6" name="A Small Room" tags="">
+  <%= "<%" %>
+    $(function() {
+      s.knowMara = (Math.random() > 0.5 ? true : false);
+      s.hairColor = _.sample(["red", "brown", "blond", "black"]);
+      s.hairType = _.sample(["straight", "curly"]);
+    });
+  %>
+
+  You have arrived? Perhaps you have hair.
+</tw-passagedata>
+</tw-storydata>
