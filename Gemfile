@@ -15,6 +15,9 @@ gem 'erubis'
 # Used by Entwined for processing game Markdown
 gem 'redcarpet'
 
+# Initially for things like generating names
+gem 'demiurge'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
