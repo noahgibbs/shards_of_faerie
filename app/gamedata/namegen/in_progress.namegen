@@ -1,0 +1,4 @@
+brownie_name: (:brownie_adj + " " + :brownie_personal_name) | (:brownie_adj + " " + :brownie_personal_name + " " + :brownie_title) | (:brownie_personal_name + " " + :brownie_title)
+brownie_adj: wee | brown | little | bonny | thrawn (0.1) | lucky
+brownie_personal_name: Brandon | Fergus | Sivian | Siobhan | Sean | Shaen | Llad | Hooks | Tooley
+brownie_title: "the helpful"

@@ -1,0 +1,29 @@
+any: :cosmopolitan_name(30) | :goblin_name(20)
+
+cosmopolitan_name: (:cosmopolitan_title + " " + :cosmopolitan_personal_name) | :cosmopolitan_personal_name(2)
+cosmopolitan_personal_name: (:cosmopolitan_first + " " + :cosmopolitan_epithet)(20) | (:cosmopolitan_first)(10) | (:cosmopolitan_epithet)(5)
+
+cosmopolitan_title: "The"(3) | ("The" + :cosmopolitan_title_word)(2) | :cosmopolitan_title_word(2)
+
+cosmopolitan_title_word: King|Queen|Monarch|Autarch|Dictator|Viscount|Viscountess|Baron|Baroness|Duke|Duchess|Guru|Grand|Grandest|Prince|Princeling|Princess|Wizard|Sorcerer(0.5)|Arcane|Divine
+
+cosmopolitan_first: Oberon | Auberon | Beryl | Titania | Tytania | Topaz | Ruby | Onyx | Periwinkle | Elan | Elanor | Elianaar | Hyacinth | Rose | Woundwort | Skyberry | Burdock | Cluracan(0.1)
+cosmopolitan_epithet: :cosmopolitan_maker_title
+
+cosmopolitan_maker_title: :cosmo_material + :cosmo_actor
+cosmo_material: Light | Dark | Shadow | Flower | Stone | Air | Diamond (0.1)
+cosmo_actor: weaver | shaper | maker | walker | brewer
+
+
+goblin_name: (:goblin_clan_name + " " + :goblin_phonetic + " " + :goblin_title)(5) | (:goblin_clan_name + " " + :goblin_phonetic)(3) | (:goblin_phonetic + " " + :goblin_title)(4)
+goblin_clan_name: Red | Brown | Black | Yellow | Green | BigHand
+goblin_phonetic: (:goblin_prefix + :goblin_suffix) | (:goblin_prefix + :goblin_middle + :goblin_suffix)
+goblin_prefix: :goblin_first_first + :goblin_first_vowel + :goblin_first_last
+goblin_first_first: G | K | Z | B | R | T | V | Kl | Tl
+goblin_first_vowel: a | aa | au | ee
+goblin_first_last: r | z | g
+goblin_suffix: :goblin_last_first + :goblin_first_vowel + :goblin_last_last
+goblin_last_first: sh | bl | kh
+goblin_last_last: rg | rgh | rr | ng | g | lg | nk | gk | gh
+goblin_middle: fan | blaz | glun | krun | gran | mar
+goblin_title: "the Handsome"(0.3) | DarkHandsome | StoneFace | CrackSkin | "the Rugged" | "the Dark" | "Ill-Favored" | "Most-Favored" | BragTongue | FireTongue
