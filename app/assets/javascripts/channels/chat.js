@@ -14,3 +14,4 @@ App.chat = App.cable.subscriptions.create("ChatChannel",
             $(".chatarea").html(App.chatData.join("<br/>"));
         }
     });
+console.log("Setting up WebSocket for chat...");
