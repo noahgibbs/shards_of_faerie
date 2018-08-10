@@ -16,9 +16,13 @@
   <body>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <p>Logged in as <%= current_user.name %> / <%= current_user.email %> </p>
 
 <div class="container">
+  <div class="row">
+    <div class="col-md right-aligned">
+      Logged in as <%= current_user.name || "No Name" %> / <%= current_user.email %>
+    </div>
+  </div>
   <div class="row"> <div class="col-md">
     <%= yield %>
   </div></div>
@@ -33,13 +37,11 @@
 
   <div class="row">
     <div class="col-sm">
-      One of three columns
     </div>
     <div class="col-sm">
       <img src="/sof_logo.png" width="200" height="150"></img>
     </div>
     <div class="col-sm">
-      One of three columns
     </div>
   </div>
 
