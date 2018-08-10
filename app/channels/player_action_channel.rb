@@ -38,8 +38,6 @@ class PlayerActionChannel < ApplicationCable::Channel
     stop_all_streams
   end
 
-  # TODO: we need to farm out received actions to multiple subgame objects somehow, and figure out
-  # how to subscribe to the appropriate streams...
   def receive(data)
     @current_subgame_connection.receive(data)
   end

@@ -5,6 +5,7 @@ class SubgameConnection
     @channel = channel
   end
 
+  # Override this in subclasses
   def receive(data)
   end
 
