@@ -9,3 +9,15 @@
 .client-area {
     font-size: 200%;
 };
+
+.clienttop::after {
+  content: "";
+  background: url(/img/20180810_Green_glow.png);
+  opacity: 0.5;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  z-index: -1;
+}
