@@ -12,7 +12,7 @@
 require "subgames"
 
 class PlayerActionChannel < ApplicationCable::Channel
-  attr_reader :current_subgame_connection
+  attr_reader :character
 
   # Called after successful subscription
   def subscribed
@@ -20,6 +20,13 @@ class PlayerActionChannel < ApplicationCable::Channel
       raise "Somehow subscribed initially with non-nil subgame instance var! Dying!"
     end
     title_subgame_id = Subgame.subgame_id_for_name("Title")
+    character = Character.where(:user_id => current_user.id)
+    characters = character.all
+    if characters.size == 0
+      @character = Character.create(:user_id => current_user.id, :name => "A slight intensity in the Green", :appearance => { "body" => "none" } )
+    else
+      @character = character.first  # For now, just pick one
+    end
 
     # stream_from "some_stream_identifier"
     stream_for current_user
