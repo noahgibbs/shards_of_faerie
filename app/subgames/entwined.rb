@@ -105,9 +105,14 @@ class EntwinedSubgameConnection < SubgameConnection
     @markdown_parser.render(content)
   end
 
-  def initialize
+  def initialize(channel)
+    super
+    @twining = self.class.twining_by_name "Green Emergence"
+    @location = @twining[:startnode]
+    replace_html(".client-area", @twining[@location][:content])
   end
 
   def receive(data)
+    STDERR.puts "Entwined: received #{data.inspect}"
   end
 end

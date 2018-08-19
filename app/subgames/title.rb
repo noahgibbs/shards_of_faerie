@@ -6,10 +6,11 @@ class TitleSubgameConnection < SubgameConnection
   end
 
   def receive(data)
-    if data["action"] == "entwined"
+    if data["gameaction"] == "entwined"
       STDERR.puts "Received entwined action"
+      @channel.set_new_subgame_connection EntwinedSubgameConnection.new(@channel)
     else
-      STDERR.puts "Received non-entwine action: #{data.inspect}"
+      STDERR.puts "Received non-entwined action [1]: #{data.inspect} (this may be because of multiple clicks)"
     end
   end
 end

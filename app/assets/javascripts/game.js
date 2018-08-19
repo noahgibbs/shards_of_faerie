@@ -13,6 +13,12 @@ function setBackground(data) {
     window.backgroundSetData = data;
 }
 
+function hueRotateChange(event) {
+    var clientBgElement = document.getElementById("client-bg");
+    //console.log("HueRotateChange:", parseFloat(clientBgElement.huerotation - 10.0));
+    clientBgElement.style.filter = "hue-rotate(" + parseFloat(clientBgElement.huerotation - 10.0) + "deg)";
+}
+
 (function(){
     // Set the background based on the requested appearance.
     if(undefined !== window.backgroundSet) {
@@ -23,6 +29,10 @@ function setBackground(data) {
         if(window.lastBackgroundSet !== window.backgroundSet) {
             var clientBgElement = document.getElementById("client-bg");
             if("greenGlow" === window.backgroundSetData) {
+                clientBgElement.huerotation = 0.0;
+                createjs.Tween.get(clientBgElement, { override: true, bounce: true, loop: -1 })
+                    .to( { huerotation: 20 }, 10000, createjs.Ease.elasticIn)
+                    .addEventListener("change", hueRotateChange);
                 clientBgElement.style.opacity = 0.5;
                 clientBgElement.style.background = "url(/img/20180810_Green_glow.png)";
                 clientBgElement.style.position = "absolute";

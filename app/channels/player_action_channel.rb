@@ -33,7 +33,11 @@ class PlayerActionChannel < ApplicationCable::Channel
     #stream_from "player_actions_#{current_user.id}"
     # reject unless current_user.can_access?(@room)
 
-    @current_subgame_connection = TitleSubgameConnection.new(self)
+    set_subgame_connection TitleSubgameConnection.new(self)
+  end
+
+  def set_subgame_connection(csc)
+    @current_subgame_connection = csc
   end
 
   def send_single(data)
