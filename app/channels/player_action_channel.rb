@@ -9,8 +9,6 @@
 # Specifically, it dispatches to various sub-game objects for
 # different game modes.
 
-require "subgames"
-
 class PlayerActionChannel < ApplicationCable::Channel
   attr_reader :character
 

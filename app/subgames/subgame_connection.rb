@@ -26,6 +26,3 @@ class SubgameConnection
     replace_html(elt_selector, tmpl.evaluate(locals))
   end
 end
-
-require "title"
-require "entwined"
