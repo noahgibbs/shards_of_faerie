@@ -27,7 +27,6 @@
 
 class EntwinedSubgameConnection < SubgameConnection
   def self.twining_by_name(name)
-    @twinings ||= {}
     @twinings[name.to_s]
   end
 
@@ -107,9 +106,10 @@ class EntwinedSubgameConnection < SubgameConnection
 
   def initialize(channel)
     super
-    @twining = self.class.twining_by_name "Green Emergence"
-    @location = @twining[:startnode]
-    replace_html(".client-area", @twining[@location][:content])
+    @twining = EntwinedSubgameConnection.twining_by_name "Green Emergence"
+    location_name = @twining[:startnode]
+    @passage = @twining[:passages][location_name]
+    replace_html(".client-area", @passage[:content])
   end
 
   def receive(data)
