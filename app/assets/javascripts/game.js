@@ -1,10 +1,12 @@
 $(function() {
-    $(".client-area").on("click", ".action-button", function() {
+    $(".client-area").on("click", ".action-button", function(event) {
         var act = $(this).attr("click-action");
         App.player_action.send({ gameaction: act });
+        event.preventDefault();
     });
-    $(".client-area").on("click", ".passage-link", function() {
+    $(".client-area").on("click", ".passage-link", function(event) {
         App.player_action.send({ passageaction: $(this).attr("data-target") });
+        event.preventDefault();
     });
     setBackground("greenGlow");
 });
