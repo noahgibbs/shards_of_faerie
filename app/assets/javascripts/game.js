@@ -3,6 +3,9 @@ $(function() {
         var act = $(this).attr("click-action");
         App.player_action.send({ gameaction: act });
     });
+    $(".client-area").on("click", ".passage-link", function() {
+        App.player_action.send({ passageaction: $(this).attr("data-target") });
+    });
     setBackground("greenGlow");
 });
 

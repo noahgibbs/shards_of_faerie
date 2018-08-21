@@ -36,10 +36,12 @@ class EntwinedSubgameConnection < SubgameConnection
   def self.twining_by_name(name)
     @twinings ||= {}
 
-    # Not there? Try to demand-load
-    unless @twinings[name.to_s]
-      filename = File.join(Rails.root / "app/gamedata/twinings/#{name}.twining")
-      load_twining_file(filename) if File.exists?(filename)
+    # TODO later: have some kind of not-always-reloaded version
+
+    filename = File.join(Rails.root / "app/gamedata/twinings/#{name}.twining")
+    if !@twinings[name.to_s] || (File.mtime(filename) > @twinings[name.to_s][:load_time])
+      @twinings.delete(name.to_s)
+      load_twining_file(filename)
     end
 
     @twinings[name.to_s]
@@ -80,6 +82,7 @@ class EntwinedSubgameConnection < SubgameConnection
       styles: styles,
       scripts: scripts,
       passages: passages,
+      load_time: Time.now,
     }
   end
 
@@ -94,8 +97,8 @@ class EntwinedSubgameConnection < SubgameConnection
     content = template.evaluate
 
     # Regexp is from Snowman, Ruby code is obviously not
-    content.gsub(/\[\[(.*?)\]\]/) do |target|
-      display = target
+    content.gsub!(/\[\[(.*?)\]\]/) do |full|
+      target = display = $1
 
       rightIndex = target.index("->")
       if rightIndex.nil?
@@ -110,7 +113,7 @@ class EntwinedSubgameConnection < SubgameConnection
       end
 
       # Link to "target" passage, with text "display"
-      "<a class='passage-link' data-target='#{target}'>#{display}</a>"
+      "<a class='passage-link' data-target='#{target}' href='#'>#{display}</a>"
 
       # Snowman uses: '<a href="javascript:void(0)" data-passage="' + _.escape(target) + '">' + display + '</a>';
     end

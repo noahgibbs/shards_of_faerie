@@ -13,10 +13,11 @@ window.jQuery("#toolbar .saveButton").on("click", function() {
 </script>
 
 <tw-passagedata pid="1" name="Awareness" tags="" position="412,200" size="100,100">
-You're floating. <span class='green'>Everything is green.</span>
+You're floating, bodiless. <span class='green'>Everything is green.</span>
 
-[[Where am I?]] [[Who am I?]]
-[[I think I know who I am]]
+* [[Where am I?]]
+* [[Who am I?]]
+* [[I think I know who I am]]
 </tw-passagedata>
 
 <tw-passagedata pid="2" name="Where am I?" tags="" position="330,349" size="100,100">
