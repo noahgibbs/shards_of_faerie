@@ -31,7 +31,7 @@ function hueRotateChange(event) {
             if("greenGlow" === window.backgroundSetData) {
                 clientBgElement.huerotation = 0.0;
                 createjs.Tween.get(clientBgElement, { override: true, bounce: true, loop: -1 })
-                    .to( { huerotation: 20 }, 10000, createjs.Ease.elasticIn)
+                    .to( { huerotation: 20 }, 10000)
                     .addEventListener("change", hueRotateChange);
                 clientBgElement.style.opacity = 0.5;
                 clientBgElement.style.background = "url(/img/20180810_Green_glow.png)";

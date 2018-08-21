@@ -25,8 +25,23 @@
 # * https://github.com/klembot/snowman
 # * https://github.com/vmg/redcarpet
 
+# Funny thing about this class and autoloading? Turns out that
+# autoloading will get rid of the class object. That means that
+# caching like this on the class object will go away with each code
+# reload. Surprise! So it's important to reload when necessary, rather
+# than caching in advance in, say, an initializer. It's an interesting
+# enforcement of best practices!
+
 class EntwinedSubgameConnection < SubgameConnection
   def self.twining_by_name(name)
+    @twinings ||= {}
+
+    # Not there? Try to demand-load
+    unless @twinings[name.to_s]
+      filename = File.join(Rails.root / "app/gamedata/twinings/#{name}.twining")
+      load_twining_file(filename) if File.exists?(filename)
+    end
+
     @twinings[name.to_s]
   end
 
@@ -104,9 +119,9 @@ class EntwinedSubgameConnection < SubgameConnection
     @markdown_parser.render(content)
   end
 
-  def initialize(channel)
-    super
-    @twining = EntwinedSubgameConnection.twining_by_name "Green Emergence"
+  def initialize(channel, twining_name)
+    super(channel)
+    @twining = EntwinedSubgameConnection.twining_by_name twining_name
     location_name = @twining[:startnode]
     @passage = @twining[:passages][location_name]
     replace_html(".client-area", @passage[:content])
