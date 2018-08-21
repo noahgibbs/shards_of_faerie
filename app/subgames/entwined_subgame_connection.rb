@@ -1,5 +1,5 @@
-# This class exists for the Entwined subgame format, based pretty
-# closely on Twine's Snowman format.
+# This class exists for the Entwined subgame format, inspired
+# by Twine's Snowman format.
 
 # Snowman preprocesses markdown in the story passages. It does that
 # via a [series of steps documented in its
@@ -100,14 +100,8 @@ class EntwinedSubgameConnection < SubgameConnection
     content.gsub!(/\[\[(.*?)\]\]/) do |full|
       target = display = $1
 
-      rightIndex = target.index("->")
-      if rightIndex.nil?
-        leftIndex = target.index("<-")
-        unless leftIndex.nil?
-          display = target[(leftIndex+1)..-1]
-          target = target[0..leftIndex]
-        end
-      else
+      rightIndex = target.index("|")
+      unless rightIndex.nil?
         display = target[0...rightIndex]
         target = target[(rightIndex+1)..-1]
       end
@@ -131,6 +125,15 @@ class EntwinedSubgameConnection < SubgameConnection
   end
 
   def receive(data)
-    STDERR.puts "Entwined: received #{data.inspect}"
+    if data["passageaction"]
+      if @passage[:transitions].include?(data["passageaction"])
+        @passage = @twining[:passages][data["passageaction"]]
+        replace_html(".client-area", @passage[:content])
+      else
+        STDERR.puts "Entwined: received unexpected passage action: #{data.inspect}"
+      end
+    else
+      STDERR.puts "Entwined: received unexpected action: #{data.inspect}"
+    end
   end
 end

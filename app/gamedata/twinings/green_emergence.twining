@@ -23,13 +23,13 @@ You're floating, bodiless. <span class='green'>Everything is green.</span>
 <tw-passagedata pid="2" name="Where am I?" tags="" position="330,349" size="100,100">
 You're not sure. <span class='green'>You're floating in greenness.</span>
 
-[[Go back to floating-&gt;Awareness]]
+[[Go back to floating|Awareness]]
 </tw-passagedata>
 
 <tw-passagedata pid="3" name="Who am I?" tags="" position="487,350" size="100,100">
 You're not sure. <span class='green'>You're still floating in greenness.</span>
 
-[[Go back to floating-&gt;Awareness]]
+[[Go back to floating|Awareness]]
 </tw-passagedata>
 
 <tw-passagedata pid="4" name="I think I know who I am" tags="">
@@ -37,8 +37,8 @@ Everything is hard to remember when <span class='green'>it's green</span>.
 
 But maybe you're coming out of the green, a bit?
 
-[[No, everything is still green-&gt;Awareness]]
-[[Yes, the green is starting to recede-&gt;Emergence]]
+[[No, everything is still green|Awareness]]
+[[Yes, the green is starting to recede|Emergence]]
 </tw-passagedata>
 
 <tw-passagedata pid="5" name="Emergence" tags="">
@@ -47,9 +47,9 @@ The green was feeling very bright, and now it's dimming.
 
 Other colors exist now, up ahead - grays, browns and a spot of twinkling blue.
 
-[[Retreat from the colors-&gt;Awareness]]
+[[Retreat from the colors|Awareness]]
 
-[[Follow the colors-&gt;A Small Room]]
+[[Follow the colors|A Small Room]]
 </tw-passagedata>
 
 <tw-passagedata pid="6" name="A Small Room" tags="">
