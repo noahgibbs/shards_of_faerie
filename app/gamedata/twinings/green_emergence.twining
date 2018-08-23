@@ -53,12 +53,11 @@ Other colors exist now, up ahead - grays, browns and a spot of twinkling blue.
 </tw-passagedata>
 
 <tw-passagedata pid="6" name="A Small Room" tags="">
-  <%= "<%" %>
-    $(function() {
-      s.knowMara = (Math.random() > 0.5 ? true : false);
-      s.hairColor = _.sample(["red", "brown", "blond", "black"]);
-      s.hairType = _.sample(["straight", "curly"]);
-    });
+  <%
+    # I expect this to fail horribly. Need to implement some state management.
+    s.knowMara = (Math.random() > 0.5 ? true : false);
+    s.hairColor = ["red", "brown", "blond", "black"].sample
+    s.hairType = ["straight", "curly"].sample
   %>
 
   You have arrived? Perhaps you have hair.
