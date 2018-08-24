@@ -15,7 +15,6 @@ class PlayerActionChannel < ApplicationCable::Channel
     unless @current_subgame_connection.nil?
       raise "Somehow subscribed initially with non-nil subgame instance var! Dying!"
     end
-    title_subgame_id = Subgame.subgame_id_for_name("Title")
 
     # stream_from "some_stream_identifier"
     stream_for current_user
