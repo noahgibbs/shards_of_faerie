@@ -7,7 +7,7 @@
 # similar but different, and omits the div- and span-processing that
 # Snowman changes between different versions.
 
-# * Preprocess with Erubis in an execution environment documented below
+# * Process with Erubis in an execution environment documented below
 # * (Not implemented)Remove comments, from hash to end of line
 # * [[Links]] as well as [[Links->target]] and [[target<-Links]] are processed
 # * Render with the RedCarpet Markdown parser
@@ -63,14 +63,12 @@ class EntwinedSubgameConnection < SubgameConnection
 
     passages = {}
     doc.css("tw-storydata tw-passagedata").map do |node|
-      passage_content = preprocess_passage_content node.content
-      transitions = passage_content.scan(/data-target='(.*?)'/).flatten
+      passage_content = node.content
       passage = {
         pid: node.attribute("pid").value,
         name: node.attribute("name").value,
         tags: node.attribute("tags").value,
         content: passage_content,
-        transitions: transitions,
       }
       passages[passage[:pid]] = passage
       passages[passage[:name]] = passage
@@ -89,7 +87,7 @@ class EntwinedSubgameConnection < SubgameConnection
   # * Preprocess with Erubis in an execution environment documented below
   # * [[Links]] as well as [[Links->target]] and [[target<-Links]] are processed
   # * Render with the RedCarpet Markdown parser
-  def self.preprocess_passage_content(content)
+  def self.process_passage_content(content)
     @renderer ||= Redcarpet::Render::HTML.new
     @markdown_parser ||= Redcarpet::Markdown.new(@renderer)
 
@@ -119,21 +117,27 @@ class EntwinedSubgameConnection < SubgameConnection
   def initialize(channel, twining_name)
     super(channel)
     @twining = EntwinedSubgameConnection.twining_by_name twining_name
-    location_name = @twining[:startnode]
-    @passage = @twining[:passages][location_name]
-    replace_html(".client-area", @passage[:content])
+    move_to_passage @twining[:startnode]
   end
 
   def receive(data)
     if data["passageaction"]
-      if @passage[:transitions].include?(data["passageaction"])
-        @passage = @twining[:passages][data["passageaction"]]
-        replace_html(".client-area", @passage[:content])
+      if @transitions.include?(data["passageaction"])
+        move_to_passage data["passageaction"]
       else
         STDERR.puts "Entwined: received unexpected passage action: #{data.inspect}"
       end
     else
       STDERR.puts "Entwined: received unexpected action: #{data.inspect}"
     end
+  end
+
+  protected
+
+  def move_to_passage(passage_name)
+    @passage = @twining[:passages][passage_name]
+    processed_content = self.class.process_passage_content @passage[:content]
+    @transitions = processed_content.scan(/data-target='(.*?)'/).flatten
+    replace_html(".client-area", processed_content)
   end
 end
