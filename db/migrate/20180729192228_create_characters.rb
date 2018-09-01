@@ -8,6 +8,5 @@ class CreateCharacters < ActiveRecord::Migration[5.2]
       t.timestamps
     end
     add_index :characters, :name, unique: true
-    add_index :characters, :user_id, unique: true
   end
 end
