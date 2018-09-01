@@ -50,7 +50,7 @@ class EntwinedSubgameConnection < SubgameConnection
   def self.load_twining_file(filename)
     @twinings ||= {}
 
-    doc = File.open(filename, "r") { |f| Nokogiri::XML(f) }
+    doc = File.open(filename, "r") { |f| Nokogiri::XML(f) { |config| config } }
     storydata = doc.css("tw-storydata")
     twining_name = storydata.attribute("name").value
     story_startnode = storydata.attribute("startnode").value
@@ -116,6 +116,7 @@ class EntwinedSubgameConnection < SubgameConnection
 
   def initialize(channel, twining_name)
     super(channel)
+    @twining_name = twining_name
     @twining = EntwinedSubgameConnection.twining_by_name twining_name
     move_to_passage @twining[:startnode]
   end

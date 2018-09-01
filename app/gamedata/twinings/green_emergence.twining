@@ -1,4 +1,4 @@
-<tw-storydata name="green_emergence" startnode="1" creator="Twine" ifid="7B4D239A-F328-469C-AA8E-A83F2A53DDD0" zoom="1" format="Snowman" format-version="1.3.0" options="" hidden>
+<tw-storydata name="green_emergence" startnode="1" creator="Twine" ifid="7B4D239A-F328-469C-AA8E-A83F2A53DDD0" zoom="1" format="Snowman" format-version="1.3.0" options="">
 
 <style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
 .green {
@@ -53,12 +53,12 @@ Other colors exist now, up ahead - grays, browns and a spot of twinkling blue.
 </tw-passagedata>
 
 <tw-passagedata pid="6" name="A Small Room" tags="">
-  <%
+  &lt;%
     # I expect this to fail horribly. Need to implement some state management.
     s.knowMara = (Math.random() > 0.5 ? true : false);
     s.hairColor = ["red", "brown", "blond", "black"].sample
     s.hairType = ["straight", "curly"].sample
-  %>
+  %&gt;
 
   You have arrived? Perhaps you have hair.
 </tw-passagedata>
