@@ -146,6 +146,12 @@ class EntwinedSubgameConnection < SubgameConnection
 end
 
 class EntwinedContextObject
+  attr_reader :twining_name
+  attr_reader :channel
+  attr_reader :user_id
+  attr_reader :character_id
+  attr_reader :subgame_state
+
   def initialize(twining_name:, channel:, user_id:, character_id:)
     @@entwined_subgame_id = Subgame.where(name: "Entwined").first.id
 
@@ -153,7 +159,7 @@ class EntwinedContextObject
     @channel = channel
     @user_id = user_id
     @character_id = character_id
-    @s = SubgameState.where(character: character_id, subgame_id: @@entwined_subgame_id)
+    @subgame_state = SubgameState.where(character: character_id, subgame_id: @@entwined_subgame_id).first_or_create { |s| s.state = {} }
   end
 
   def set_passage(passage)
@@ -162,5 +168,21 @@ class EntwinedContextObject
 
   # State object for this Entwined passage(s)
   def s
+    @wrapper ||= EntwinedWrapperObject.new(self)
+  end
+end
+
+class EntwinedWrapperObject
+  def initialize(context)
+    @context = context
+  end
+
+  def [](key)
+    @context.subgame_state.state[key]
+  end
+
+  def []=(key, value)
+    @context.subgame_state.state[key] = value
+    @context.subgame_state.save!
   end
 end

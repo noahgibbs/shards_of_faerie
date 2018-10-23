@@ -55,9 +55,9 @@ Other colors exist now, up ahead - grays, browns and a spot of twinkling blue.
 <tw-passagedata pid="6" name="A Small Room" tags="">
   &lt;%
     # I expect this to fail horribly. Need to implement some state management.
-    s.knowMara = (Random.rand() > 0.5 ? true : false);
-    s.hairColor = ["red", "brown", "blond", "black"].sample
-    s.hairType = ["straight", "curly"].sample
+    s["knowMara"] = (Random.rand() > 0.5 ? true : false);
+    s["hairColor"] = ["red", "brown", "blond", "black"].sample
+    s["hairType"] = ["straight", "curly"].sample
   %&gt;
 
   You have arrived? Perhaps you have hair.
