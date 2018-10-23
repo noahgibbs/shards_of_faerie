@@ -16,16 +16,30 @@ class PlayerActionChannel < ApplicationCable::Channel
       raise "Somehow subscribed initially with non-nil subgame instance var! Dying!"
     end
 
-    # stream_from "some_stream_identifier"
     stream_for current_user
     #stream_from "player_actions_#{current_user.id}"
     # reject unless current_user.can_access?(@room)
 
+    # TODO: do this intelligently, not "pick first"
+    if current_user.characters.size > 0
+      set_current_character current_user.characters.first.id
+    end
     set_subgame_connection TitleSubgameConnection.new(self)
   end
 
   def set_subgame_connection(csc)
     @current_subgame_connection = csc
+  end
+
+  def set_current_character(char_id)
+    @current_char_id = char_id
+    @current_char = nil
+  end
+
+  def current_character
+    return @current_char if @current_char
+    raise "No character ID set!" unless @current_char_id
+    @current_char ||= Character.where(id: @current_char_id).first
   end
 
   def send_single(data)

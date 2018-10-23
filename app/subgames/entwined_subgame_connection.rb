@@ -36,8 +36,6 @@ class EntwinedSubgameConnection < SubgameConnection
   def self.twining_by_name(name)
     @twinings ||= {}
 
-    # TODO later: have some kind of not-always-reloaded version
-
     filename = File.join(Rails.root / "app/gamedata/twinings/#{name}.twining")
     if !@twinings[name.to_s] || (File.mtime(filename) > @twinings[name.to_s][:load_time])
       @twinings.delete(name.to_s)
@@ -82,17 +80,18 @@ class EntwinedSubgameConnection < SubgameConnection
       passages: passages,
       load_time: Time.now,
     }
+    nil
   end
 
   # * Preprocess with Erubis in an execution environment documented below
   # * [[Links]] as well as [[Links->target]] and [[target<-Links]] are processed
   # * Render with the RedCarpet Markdown parser
-  def self.process_passage_content(content)
+  def self.process_passage_content(content, content_name, context_object)
     @renderer ||= Redcarpet::Render::HTML.new
     @markdown_parser ||= Redcarpet::Markdown.new(@renderer)
 
-    template = Erubis::Eruby.new(content)
-    content = template.evaluate
+    template = Erubis::Eruby.new(content, :filename => content_name)
+    content = template.evaluate context_object
 
     # Regexp is from Snowman, Ruby code is obviously not
     content.gsub!(/\[\[(.*?)\]\]/) do |full|
@@ -136,9 +135,32 @@ class EntwinedSubgameConnection < SubgameConnection
   protected
 
   def move_to_passage(passage_name)
+    raise("No such passage!") unless @twining[:passages][passage_name]
     @passage = @twining[:passages][passage_name]
-    processed_content = self.class.process_passage_content @passage[:content]
+    @context_object ||= EntwinedContextObject.new(twining_name: @twining_name, channel: @channel, user_id: @channel.current_user.id, character_id: @channel.current_character.id)
+    @context_object.set_passage(passage_name)
+    processed_content = self.class.process_passage_content @passage[:content], passage_name, @context_object
     @transitions = processed_content.scan(/data-target='(.*?)'/).flatten
     replace_html(".client-area", processed_content)
+  end
+end
+
+class EntwinedContextObject
+  def initialize(twining_name:, channel:, user_id:, character_id:)
+    @@entwined_subgame_id = Subgame.where(name: "Entwined").first.id
+
+    @twining_name = twining_name
+    @channel = channel
+    @user_id = user_id
+    @character_id = character_id
+    @s = SubgameState.where(character: character_id, subgame_id: @@entwined_subgame_id)
+  end
+
+  def set_passage(passage)
+    @passage = passage
+  end
+
+  # State object for this Entwined passage(s)
+  def s
   end
 end
