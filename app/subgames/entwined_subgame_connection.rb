@@ -117,7 +117,8 @@ class EntwinedSubgameConnection < SubgameConnection
     super(channel)
     @twining_name = twining_name
     @twining = EntwinedSubgameConnection.twining_by_name twining_name
-    move_to_passage @twining[:startnode]
+    current_passage = context_object.subgame_state.state["passage"] || @twining[:startnode]
+    move_to_passage current_passage
   end
 
   def receive(data)
@@ -134,11 +135,14 @@ class EntwinedSubgameConnection < SubgameConnection
 
   protected
 
+  def context_object
+    @context_object ||= EntwinedContextObject.new(twining_name: @twining_name, channel: @channel, user_id: @channel.current_user.id, character_id: @channel.current_character.id)
+  end
+
   def move_to_passage(passage_name)
     raise("No such passage!") unless @twining[:passages][passage_name]
     @passage = @twining[:passages][passage_name]
-    @context_object ||= EntwinedContextObject.new(twining_name: @twining_name, channel: @channel, user_id: @channel.current_user.id, character_id: @channel.current_character.id)
-    @context_object.set_passage(passage_name)
+    context_object.set_passage(passage_name)
     processed_content = self.class.process_passage_content @passage[:content], passage_name, @context_object
     @transitions = processed_content.scan(/data-target='(.*?)'/).flatten
     replace_html(".client-area", processed_content)
@@ -164,6 +168,8 @@ class EntwinedContextObject
 
   def set_passage(passage)
     @passage = passage
+    @subgame_state.state["passage"] = passage
+    @subgame_state.save!
   end
 
   # State object for this Entwined passage(s)
