@@ -61,5 +61,7 @@ Other colors exist now, up ahead - grays, browns and a spot of twinkling blue.
   %&gt;
 
   You have arrived. Perhaps you have &lt;%= s["hairType"] %&gt; &lt;%= s["hairColor"] %&gt; hair.
+
+  [[No, no arriving!|Awareness]]
 </tw-passagedata>
 </tw-storydata>
