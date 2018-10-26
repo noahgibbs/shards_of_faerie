@@ -136,7 +136,7 @@ class EntwinedSubgameConnection < SubgameConnection
   protected
 
   def context_object
-    @context_object ||= EntwinedContextObject.new(twining_name: @twining_name, channel: @channel, user_id: @channel.current_user.id, character_id: @channel.current_character.id)
+    @context_object ||= EntwinedContextObject.new(twining_name: @twining_name, channel: @channel, user: @channel.current_user, character: @channel.current_character)
   end
 
   def move_to_passage(passage_name)
@@ -152,18 +152,18 @@ end
 class EntwinedContextObject
   attr_reader :twining_name
   attr_reader :channel
-  attr_reader :user_id
-  attr_reader :character_id
+  attr_reader :user
+  attr_reader :character
   attr_reader :subgame_state
 
-  def initialize(twining_name:, channel:, user_id:, character_id:)
+  def initialize(twining_name:, channel:, user:, character:)
     @@entwined_subgame_id = Subgame.where(name: "Entwined").first.id
 
     @twining_name = twining_name
     @channel = channel
-    @user_id = user_id
-    @character_id = character_id
-    @subgame_state = SubgameState.where(character: character_id, subgame_id: @@entwined_subgame_id).first_or_create { |s| s.state = {} }
+    @user = user
+    @character = character
+    @subgame_state = SubgameState.where(character_id: character.id, subgame_id: @@entwined_subgame_id).first_or_create { |s| s.state = {} }
   end
 
   def set_passage(passage)
@@ -172,23 +172,28 @@ class EntwinedContextObject
     @subgame_state.save!
   end
 
-  # State object for this Entwined passage(s)
+  # State object for this character
   def s
-    @wrapper ||= EntwinedWrapperObject.new(self)
+    @state_wrapper ||= EntwinedWrapperObject.new(@subgame_state.state, @subgame_state)
+  end
+
+  def appearance
+    @appearance_wrapper ||= EntwinedWrapperObject.new(@character.appearance, @character)
   end
 end
 
 class EntwinedWrapperObject
-  def initialize(context)
+  def initialize(context, obj_to_save)
     @context = context
+    @obj_to_save = obj_to_save
   end
 
   def [](key)
-    @context.subgame_state.state[key]
+    @context[key]
   end
 
   def []=(key, value)
-    @context.subgame_state.state[key] = value
-    @context.subgame_state.save!
+    @context[key] = value
+    @obj_to_save.save!
   end
 end

@@ -3,21 +3,33 @@ class TitleSubgameConnection < SubgameConnection
     super
 
     @@title_subgame_id ||= Subgame.subgame_id_for_name("Title")
+    @user = channel.current_user
+    @subgame_data = SubgameState.where(:character_id => nil, :user_id => @user.id, :subgame_id => @@title_subgame_id).first_or_create { |d| d.state = {} }
 
-    characters = Character.where(:user_id => channel.current_user.id).all
+    characters = Character.where(:user_id => @user.id).all
     if characters.size == 0
-      @character = Character.create(:user_id => channel.current_user.id, :name => "A slight intensity in the Green", :appearance => { "body" => "none" } )
+      @character = Character.create(:user_id => @user.id, :name => "A slight intensity in the Green", :appearance => { "body" => "none" } )
+      @character.save!
       characters = [ @character ]
-    else
-      @character = characters.first  # For now, just pick one
+      @subgame_data.state["last_character_id"] = @character.id
+      @subgame_data.save!
+    elsif @subgame_data.state["last_character_id"]
+      @character = Character.where(:id => @subgame_data.state["last_character_id"]).first
+    end
+
+    # If no previous (correct) character, just pick one
+    unless @character
+      @character = characters.first
+      @subgame_data.state["last_character_id"] = @character.id
+      @subgame_data.save!
     end
 
     if characters.size == 1 && @character.appearance["body"] == "none"
-      # Only one character, and that one is basically *just* autocreated
+      # Only one autocreated character - effectively zero
       replace_html_with_template(".client-area", "title/no_chars")
     elsif characters.size == 1
-      # At least one character is already basically in existence
-      replace_html_with_tempalte(".client-area", "title/one_char")
+      # At least one character is already around and set up
+      replace_html_with_template(".client-area", "title/one_char")
     else
       # Multiple characters in existence
       replace_html_with_template(".client-area", "title/multiple_chars", locals: { characters: characters })
