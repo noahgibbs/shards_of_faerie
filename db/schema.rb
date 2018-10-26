@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2018_07_29_192434) do
   end
 
   create_table "subgame_states", force: :cascade do |t|
+    t.integer "user_id"
     t.integer "character_id"
     t.integer "subgame_id", null: false
     t.json "state"

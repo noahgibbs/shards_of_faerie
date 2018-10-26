@@ -1,6 +1,7 @@
 class CreateSubgameStates < ActiveRecord::Migration[5.2]
   def change
     create_table :subgame_states do |t|
+      t.integer :user_id
       t.integer :character_id  # Can be null in a few cases, like the Title subgame
       t.integer :subgame_id, null: false
       t.json :state
