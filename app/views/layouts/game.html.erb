@@ -40,7 +40,11 @@
       <img src="/sof_logo.png" width="200" height="150"></img>
     </div>
     <div class="col-sm right-aligned">
-      Logged in as <%= current_user.name || "No Name" %> / <%= current_user.email %>
+      <% if current_user %>
+        Logged in as <%= current_user.name || "No Name" %> / <%= current_user.email %>
+      <% else %>
+        Not logged in.
+      <% end %>
     </div>
   </div>
 
