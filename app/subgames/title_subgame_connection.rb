@@ -46,7 +46,7 @@ class TitleSubgameConnection < SubgameConnection
       character = Character.where(:user_id => @channel.current_user.id, :name => char_name).first
       @channel.set_subgame_connection ActivitySubgameConnection.new(@channel, selected_character)
     else
-      STDERR.puts "Received unexpected gameaction: #{data.inspect} (this may be because of multiple clicks)"
+      Rails.logger.error("Received unexpected gameaction: #{data.inspect} (this may be because of multiple clicks)")
     end
   end
 end
