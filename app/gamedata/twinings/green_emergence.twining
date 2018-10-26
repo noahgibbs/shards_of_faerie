@@ -58,6 +58,9 @@ Other colors exist now, up ahead - grays, browns and a spot of twinkling blue.
     s["knowMara"] ||= (Random.rand() > 0.5 ? true : false);
     s["hairColor"] ||= ["red", "brown", "blond", "black"].sample
     s["hairType"] ||= ["straight", "curly"].sample
+    if appearance["body"] == "none"
+      appearance["body"] = "wispy"
+    end
   %&gt;
 
   You have arrived. Perhaps you have &lt;%= s["hairType"] %&gt; &lt;%= s["hairColor"] %&gt; hair.
