@@ -11,17 +11,14 @@ class TitleSubgameConnection < SubgameConnection
       @character = Character.create(:user_id => @user.id, :name => "A slight intensity in the Green", :appearance => { "body" => "none" } )
       @character.save!
       characters = [ @character ]
-      @subgame_data.state["last_character_id"] = @character.id
-      @subgame_data.save!
+      switch_to_character @character
     elsif @subgame_data.state["last_character_id"]
       @character = Character.where(:id => @subgame_data.state["last_character_id"]).first
     end
 
     # If no previous (correct) character, just pick one
     unless @character
-      @character = characters.first
-      @subgame_data.state["last_character_id"] = @character.id
-      @subgame_data.save!
+      switch_to_character characters.first
     end
 
     if characters.size == 1 && @character.appearance["body"] == "none"
@@ -36,14 +33,21 @@ class TitleSubgameConnection < SubgameConnection
     end
   end
 
+  def switch_to_character(char)
+    @character = char
+    @subgame_data.state["last_character_id"] = char.id
+    @subgame_data.save!
+  end
+
   def receive(data)
     if data["gameaction"] == "thickening_in_green"
       @channel.set_subgame_connection EntwinedSubgameConnection.new(@channel, "green_emergence")
     elsif data["gameaction"] == "reaching_out"
-      @channel.set_subgame_connection ActivitySubgameConnection.new(@channel, @character)
+      @channel.set_subgame_connection ActivitySubgameConnection.new(@channel)
     elsif data["gameaction"] == "reach_out_one"
       char_name = data["charname"]
       character = Character.where(:user_id => @channel.current_user.id, :name => char_name).first
+      switch_to_character character
       @channel.set_subgame_connection ActivitySubgameConnection.new(@channel, selected_character)
     else
       Rails.logger.error("Received unexpected gameaction: #{data.inspect} (this may be because of multiple clicks)")
