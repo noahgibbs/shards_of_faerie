@@ -76,6 +76,7 @@ GEM
     crass (1.0.4)
     demiurge (0.5.0)
       multi_json (~> 1.12)
+      parslet
       tmx (~> 0.1.5)
     devise (4.4.3)
       bcrypt (~> 3.0)
@@ -117,6 +118,7 @@ GEM
     nokogiri (1.8.4)
       mini_portile2 (~> 2.3.0)
     orm_adapter (0.5.0)
+    parslet (1.8.2)
     pg (0.18.3)
     public_suffix (3.0.2)
     puma (3.12.0)
