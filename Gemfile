@@ -15,7 +15,7 @@ gem 'erubis'
 # Used by Entwined for processing game Markdown
 gem 'redcarpet'
 
-# Initially for things like generating names
+# Initially for generating names, later for simulating worlds
 gem 'demiurge'
 
 # Use SCSS for stylesheets
