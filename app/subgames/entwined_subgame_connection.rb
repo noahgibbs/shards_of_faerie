@@ -25,7 +25,7 @@
 # * https://github.com/klembot/snowman
 # * https://github.com/vmg/redcarpet
 
-# Funny thing about this class and autoloading? Turns out that
+# Funny thing about this class and autoloading? Turns out that Rails
 # autoloading will get rid of the class object. That means that
 # caching like this on the class object will go away with each code
 # reload. Surprise! So it's important to reload when necessary, rather
