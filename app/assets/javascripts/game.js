@@ -1,7 +1,8 @@
 $(function() {
     $(".client-area").on("click", ".action-button", function(event) {
         var act = $(this).attr("click-action");
-        App.player_action.send({ gameaction: act });
+        var args = $(this).attr("click-action-args");  // Replace this with something more structured? For now, tolerable.
+        App.player_action.send({ gameaction: act, args: args });
         event.preventDefault();
     });
     $(".client-area").on("click", ".passage-link", function(event) {
