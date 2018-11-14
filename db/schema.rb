@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2018_07_29_192434) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_characters_on_name", unique: true
+    t.index ["name", "user_id"], name: "index_characters_on_name_and_user_id", unique: true
   end
 
   create_table "subgame_states", force: :cascade do |t|
