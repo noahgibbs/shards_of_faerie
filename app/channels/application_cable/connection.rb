@@ -13,7 +13,7 @@ module ApplicationCable
       if verified_user = User.find_by(id: cookies.signed['user.id'])
         verified_user
       else
-        raise "No guest logins yet!"
+        reject_unauthorized_connection
       end
     end
   end
