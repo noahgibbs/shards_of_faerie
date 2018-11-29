@@ -9,6 +9,12 @@
 # Specifically, it dispatches to various sub-game objects for
 # different game modes.
 
+# Bookmarks:
+#
+# * https://github.com/palkan/action-cable-testing#channels-testing
+# * https://guides.rubyonrails.org/action_cable_overview.html
+# *
+
 class PlayerActionChannel < ApplicationCable::Channel
   # Called after successful subscription
   def subscribed
