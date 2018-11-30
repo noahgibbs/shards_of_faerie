@@ -8,8 +8,15 @@
 </p>
 
 <p>
-  <a class='action-button' click-action='reaching_out' href='#'>Reach out to this 'somebody?'</a>
+  <a class='action-button' click-action='reaching_out' href='#'>Reach out to one 'somebody?'</a>
 </p>
+
+<p>
+  Reach out to a different 'somebody?'
+  <% characters.each do |char| %>
+    <a class='action-button' click-action='reach_out_one' click-action-args='<%= char.name %>' href='#'>To <%= char.name %>?</a>
+  <% end %>
+ </p>
 
 <p>
   <a class='action-button' click-action='thickening_in_green' href='#'>Let your mind drift into the green?</a>
