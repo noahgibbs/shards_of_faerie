@@ -10,6 +10,10 @@ class PACUserStub
     @id = id
     @characters = chars
   end
+
+  def to_param
+    @id.to_s
+  end
 end
 
 class PlayerActionChannelTest < ActionCable::Channel::TestCase
@@ -18,6 +22,7 @@ class PlayerActionChannelTest < ActionCable::Channel::TestCase
     subscribe
     assert subscription.confirmed?, "Subscription failed: not confirmed!"
     assert_equal 1, streams.size
-    #assert_equal "player_action:337", streams[0]  # How do user objects become stream names?
+    assert_equal "player_action:337", streams[0]
   end
+
 end
