@@ -17,6 +17,12 @@
 
 class PlayerActionChannel < ApplicationCable::Channel
   attr_reader :current_subgame_connection
+  attr_reader :current_character
+
+  def initialize(*args)
+    super
+    @@null_subgame_id = TitleSubgameConnection.subgame_id_by_name("None")
+  end
 
   # Called after successful subscription
   def subscribed
@@ -24,14 +30,26 @@ class PlayerActionChannel < ApplicationCable::Channel
       raise "Somehow subscribed initially with non-nil subgame instance var! Dying!"
     end
 
+    # Permit broadcasting to the current user for things like to-user chat messages
     stream_for current_user
     #stream_from "player_actions_#{current_user.id}"
     # reject unless current_user.can_access?(@room)
 
-    # TODO: do this intelligently, not "pick first"
-    if current_user.characters.size > 0
-      set_current_character current_user.characters.first.id
+    @subgame_data = SubgameState.where(:character_id => nil, :user_id => current_user.id, :subgame_id => @@null_subgame_id).first_or_create { |d| d.state = {} }
+
+    characters = current_user.characters
+    if characters.size == 0
+      @current_character = nil
+    elsif @subgame_data.state["last_character_id"]
+      # Don't need switch_to_character since we're pre-switched
+      @current_character = Character.where(:id => @subgame_data.state["last_character_id"]).first
     end
+
+    # If no previous (correct) character, just pick one
+    if characters.size > 0 && !@character
+      switch_to_character characters.first
+    end
+
     set_subgame_connection TitleSubgameConnection.new(self)
   end
 
@@ -39,15 +57,12 @@ class PlayerActionChannel < ApplicationCable::Channel
     @current_subgame_connection = csc
   end
 
-  def set_current_character(char_id)
-    @current_char_id = char_id
-    @current_char = nil
-  end
+  def switch_to_character(char)
+    return if @subgame_data.state["last_character_id"] == char.id
 
-  def current_character
-    return @current_char if @current_char
-    raise "No character ID set!" unless @current_char_id
-    @current_char ||= Character.where(id: @current_char_id).first
+    @current_character = char
+    @subgame_data.state["last_character_id"] = char.id
+    @subgame_data.save!
   end
 
   def send_single(data)
@@ -57,7 +72,7 @@ class PlayerActionChannel < ApplicationCable::Channel
 
   def unsubscribed
     # Any cleanup needed when channel is unsubscribed
-    stop_all_streams
+    #stop_all_streams
   end
 
   def receive(data)

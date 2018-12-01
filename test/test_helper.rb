@@ -2,7 +2,10 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 
+NULL_SUBGAME_ID = Subgame.where(:name => "None").first.id
 TITLE_SUBGAME_ID = Subgame.where(:name => "Title").first.id
+ENTWINED_SUBGAME_ID = Subgame.where(:name => "Entwined").first.id
+
 USER_STUB_FAKE_ID = 337
 
 class PACUserStub
@@ -34,5 +37,15 @@ class ActionCable::Channel::TestCase
   # even if there is a correct subscription.
   def server_broadcasts_for(broadcast)
     ActionCable.server.pubsub.broadcasts(broadcast).map { |s| JSON.load(s) }
+  end
+end
+
+class SubgameTestCase < ActionCable::Channel::TestCase
+  def handle_basic_subscription(chars: [], id: USER_STUB_FAKE_ID)
+    @cur_user = PACUserStub.new(chars, id: id)
+    stub_connection current_user: @cur_user
+
+    subscribe
+    assert subscription.confirmed?, "Subscription failed: not confirmed!"
   end
 end

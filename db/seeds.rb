@@ -15,6 +15,7 @@
 # create, for that reason.
 
 # We want to make sure we have the appropriate hardcoded subgames available.
+null_subgame = Subgame.find_or_create_by(:name => "None")
 title = Subgame.find_or_create_by(:name => "Title")
 entwined = Subgame.find_or_create_by(:name => "Entwined")
 activity = Subgame.find_or_create_by(:name => "Activity")
