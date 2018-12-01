@@ -48,12 +48,22 @@ class PlayerActionChannelTest < ActionCable::Channel::TestCase
     # However! We can pull ActionCable.pubsub.broadcasts("broadcast_name") and it'll grab what we want. So I *think*
     # that's what tests need to use.
 
-    # This works, but also doesn't populate "transmissions"
-    assert_broadcasts("player_action:#{USER_STUB_FAKE_ID}", 1) do
-      PlayerActionChannel.broadcast_to cur_user, { fake: :data, goes: :here }
-    end
+    # This works (doesn't assert), but also doesn't populate "transmissions"
+    #assert_broadcasts("player_action:#{USER_STUB_FAKE_ID}", 1) do
+    #  PlayerActionChannel.broadcast_to cur_user, { fake: :data, goes: :here }
+    #end
 
-    #STDERR.puts "Server trans: #{ActionCable.server.pubsub.broadcasts("player_action:#{USER_STUB_FAKE_ID}")}"
+    # This gets the server broadcasts. While transmissions doesn't work, this seems to.
+    server_broadcasts = ActionCable.server.pubsub.broadcasts("player_action:#{USER_STUB_FAKE_ID}").map { |s| JSON.load(s) }
+
+    # We should have exactly one message which replaces the game text. It should allow the thickening_in_green action,
+    # but not allow reaching out to an existing character - there isn't one.
+    assert server_broadcasts.detect { |msg|
+      msg["action"] == "replace" &&
+      msg["content"]["thickening_in_green"] &&
+      !msg["content"]["reach_out"]
+    }, "Can't find websocket message with title screen text!"
+    assert_equal 1, server_broadcasts.select { |msg| msg["action"] == "replace" }.size
   end
 
 end
