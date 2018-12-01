@@ -51,4 +51,12 @@ class TitleSubgameTest < SubgameTestCase
     }, "Can't find websocket message with title screen text!"
     assert_equal 1, transmissions.select { |msg| msg["action"] == "replace" }.size
   end
+
+  def test_thickening_in_green
+    handle_basic_subscription user: users(:newbie)
+
+    perform :receive, gameaction: "thickening_in_green"
+
+    assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
+  end
 end
