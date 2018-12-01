@@ -55,8 +55,11 @@ class TitleSubgameTest < SubgameTestCase
   def test_thickening_in_green
     handle_basic_subscription user: users(:newbie)
 
+    assert_equal 0, users(:newbie).characters.size
     perform :receive, gameaction: "thickening_in_green"
 
     assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
+    assert_equal 1, Character.where(:user_id => users(:newbie).id).count
   end
+
 end
