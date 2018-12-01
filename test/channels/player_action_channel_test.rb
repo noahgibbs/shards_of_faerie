@@ -11,7 +11,7 @@ class PACUserStub
     @characters = chars
   end
 
-  def to_param
+  def to_param  # This is how stream names are generated for models
     @id.to_s
   end
 end
