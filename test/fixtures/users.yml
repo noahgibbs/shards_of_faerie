@@ -1,0 +1,16 @@
+# users.yml
+
+newbie:
+  name: newbie
+  encrypted_password: s00pers33krit
+  email: newbie@nosuch.com
+
+newish:
+  name: newish
+  encrypted_password: s00pers33krit
+  email: newish@nosuch.com
+
+lessnewish:
+  name: lessnewish
+  encrypted_password: s00pers33krit
+  email: lessnewish@nosuch.com

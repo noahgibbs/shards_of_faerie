@@ -1,0 +1,13 @@
+# characters.yml
+
+Blob:
+  name: blob
+  user: newish
+
+Blorg:
+  name: blorg
+  user: lessnewish
+
+Blam:
+  name: blam
+  user: lessnewish

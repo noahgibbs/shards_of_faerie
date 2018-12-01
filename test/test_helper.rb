@@ -6,22 +6,6 @@ NULL_SUBGAME_ID = Subgame.where(:name => "None").first.id
 TITLE_SUBGAME_ID = Subgame.where(:name => "Title").first.id
 ENTWINED_SUBGAME_ID = Subgame.where(:name => "Entwined").first.id
 
-USER_STUB_FAKE_ID = 337
-
-class PACUserStub
-  attr :characters
-  attr :id
-
-  def initialize(chars, id: USER_STUB_FAKE_ID)
-    @id = id
-    @characters = chars
-  end
-
-  def to_param  # This is how stream names are generated for models
-    @id.to_s
-  end
-end
-
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
@@ -41,9 +25,8 @@ class ActionCable::Channel::TestCase
 end
 
 class SubgameTestCase < ActionCable::Channel::TestCase
-  def handle_basic_subscription(chars: [], id: USER_STUB_FAKE_ID)
-    @cur_user = PACUserStub.new(chars, id: id)
-    stub_connection current_user: @cur_user
+  def handle_basic_subscription(user:)
+    stub_connection current_user: user
 
     subscribe
     assert subscription.confirmed?, "Subscription failed: not confirmed!"

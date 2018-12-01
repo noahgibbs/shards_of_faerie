@@ -13,7 +13,7 @@
 
 <p>
   Reach out to a different 'somebody?'
-  <% characters.each do |char| %>
+  <% @characters.each do |char| %>
     <a class='action-button' click-action='reach_out_one' click-action-args='<%= char.name %>' href='#'>To <%= char.name %>?</a>
   <% end %>
  </p>

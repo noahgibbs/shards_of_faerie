@@ -3,8 +3,7 @@ require 'test_helper'
 class PlayerActionChannelTest < ActionCable::Channel::TestCase
   def test_subscription_and_title_screen
     # A Channel::TestCase will always stub the connection, but we can customize how it does so.
-    cur_user = PACUserStub.new([])
-    stub_connection current_user: cur_user
+    stub_connection current_user: users(:newbie)
 
     subscribe
     # The "subscription" object is the channel - in this case a PlayerActionChannel.
@@ -13,11 +12,11 @@ class PlayerActionChannelTest < ActionCable::Channel::TestCase
     assert subscription.confirmed?, "Subscription failed: not confirmed!"
 
     # Make sure a new PlayerActionChannel subscribes to the user-specific chat/message channel
-    assert streams.include?("player_action:#{USER_STUB_FAKE_ID}"), "PlayerActionChannel must subscribe to user-specific chat stream!"
+    assert streams.include?("player_action:#{users(:newbie).to_gid_param}"), "PlayerActionChannel must subscribe to user-specific chat stream! (Not: #{streams.inspect})"
 
     assert_equal TitleSubgameConnection, subscription.current_subgame_connection.class
 
-    sgs = SubgameState.where(:character_id => nil, :user_id => USER_STUB_FAKE_ID, :subgame_id => NULL_SUBGAME_ID).first
+    sgs = SubgameState.where(:character_id => nil, :user_id => users(:newbie).id, :subgame_id => NULL_SUBGAME_ID).first
     assert sgs, "No null-subgame state created for user!"
 
     # "transmissions" doesn't include anything broadcast via FooChannel.broadcast_to, even if we're subbed to it.
