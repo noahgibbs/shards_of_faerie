@@ -16,6 +16,8 @@
 # *
 
 class PlayerActionChannel < ApplicationCable::Channel
+  attr_reader :current_subgame_connection
+
   # Called after successful subscription
   def subscribed
     unless @current_subgame_connection.nil?
