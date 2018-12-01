@@ -46,7 +46,8 @@ class TitleSubgameTest < SubgameTestCase
     assert transmissions.detect { |msg|
       msg["action"] == "replace" &&
       msg["content"]["thickening_in_green"] &&
-      msg["content"]["reach_out"]
+      msg["content"]["reach_out"] &&
+      msg["content"]["awarenesses"]
     }, "Can't find websocket message with title screen text!"
     assert_equal 1, transmissions.select { |msg| msg["action"] == "replace" }.size
   end
