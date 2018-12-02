@@ -2,19 +2,21 @@ sgs_newbie_1:
   user_id: <%= ActiveRecord::FixtureSet.identify(:newbie) %>
   character_id: NULL
   subgame: title
-  state:
-    key: val
+  state: {}
 
 sgs_newish_1:
   user_id: <%= ActiveRecord::FixtureSet.identify(:newish) %>
   character_id: NULL
   subgame: title
   state:
-    key: val
+    default_subgame_id:
+      <%= ActiveRecord::FixtureSet.identify(:blob) %>: <%= ActiveRecord::FixtureSet.identify(:entwined) %>
 
 sgs_lessnewish_1:
   user_id: <%= ActiveRecord::FixtureSet.identify(:lessnewish) %>
   character_id: NULL
   subgame: title
   state:
-    key: val
+    default_subgame_id:
+      <%= ActiveRecord::FixtureSet.identify(:blorg) %>: <%= ActiveRecord::FixtureSet.identify(:entwined) %>
+      <%= ActiveRecord::FixtureSet.identify(:blam) %>: <%= ActiveRecord::FixtureSet.identify(:entwined) %>

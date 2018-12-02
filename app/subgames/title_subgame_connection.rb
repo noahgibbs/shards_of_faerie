@@ -25,32 +25,45 @@ class TitleSubgameConnection < SubgameConnection
     unless character && character.id
       raise "Need to select a character before switching to a subgame!"
     end
-    if @subgame_data.state["current_subgame_id"]
-      case @subgame_data.state["current_subgame_id"]
-      when @@entwined_subgame_id
-        subgame_connection = EntwinedSubgameConnection.new(@channel, "green_emergence")
-      when @@wanderventure_subgame_id
-        subgame_connection = WanderventureSubgameConnection.new(@channel, "green_wandering")
-      else
-        raise "Unknown subgame ID #{@subgame_data.state["current_subgame_id"].inspect}"
-      end
-      @channel.set_subgame_connection subgame_connection
-    else
-      # Will need to initialize this
-      raise "Can't find an appropriate subgame to switch to!"
+    unless @subgame_data
+      raise "Need subgame state for TitleSubgameConnection to switch to a new subgame!"
     end
+
+    sgid = nil
+    sg_state = @subgame_data.state
+    if sg_state["current_subgame_id"] && sg_state["current_subgame_id"][character.id.to_s]
+      sgid = sg_state["current_subgame_id"][character.id.to_s]
+    elsif sg_state["default_subgame_id"] && sg_state["default_subgame_id"][character.id.to_s]
+      sgid = sg_state["default_subgame_id"][character.id.to_s]
+    else
+      raise "Can't find an appropriate subgame ID to switch to!"
+    end
+
+    case sgid
+    when @@entwined_subgame_id
+      subgame_connection = EntwinedSubgameConnection.new(@channel, "green_emergence")
+    when @@wanderventure_subgame_id
+      subgame_connection = WanderventureSubgameConnection.new(@channel, "green_wandering")
+    else
+      raise "Unknown subgame ID #{sgid.inspect}"
+    end
+    @channel.set_subgame_connection subgame_connection
   end
 
   def receive(data)
     if data["gameaction"] == "thickening_in_green"
       @@fae_names ||= NamingService.subservice(:faery_names)
-      character = Character.create(:user_id => @user.id, :name => @@fae_names.generate_from_name("any"), :appearance => { "body" => "none" } )
+      character = Character.create :user_id => @user.id,
+                                   :name => @@fae_names.generate_from_name("any"),
+                                   :appearance => { "body" => "none" }
 
       # It's possible, but unusual, for this to fail because there already exists a character with that name.
       character.save!
       @channel.switch_to_character character
       @subgame_data.state["current_subgame_id"] ||= {}
       @subgame_data.state["current_subgame_id"][character.id] = @@entwined_subgame_id
+      @subgame_data.state["default_subgame_id"] ||= {}
+      @subgame_data.state["default_subgame_id"][character.id] = @@entwined_subgame_id
       @subgame_data.save!
 
       @channel.set_subgame_connection EntwinedSubgameConnection.new(@channel, "green_emergence")

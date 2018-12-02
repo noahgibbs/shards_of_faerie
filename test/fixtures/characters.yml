@@ -1,13 +1,13 @@
 # characters.yml
 
-Blob:
+blob:
   name: blob
   user: newish
 
-Blorg:
+blorg:
   name: blorg
   user: lessnewish
 
-Blam:
+blam:
   name: blam
   user: lessnewish

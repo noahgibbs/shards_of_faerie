@@ -52,7 +52,7 @@ class TitleSubgameTest < SubgameTestCase
     assert_equal 1, transmissions.select { |msg| msg["action"] == "replace" }.size
   end
 
-  def test_thickening_in_green
+  def test_thickening_in_green_first_char
     handle_basic_subscription user: users(:newbie)
 
     assert_equal 0, users(:newbie).characters.size
@@ -63,7 +63,27 @@ class TitleSubgameTest < SubgameTestCase
     assert_equal 1, Character.where(:user_id => users(:newbie).id).count
   end
 
+  def test_thickening_in_green_later_char
+    handle_basic_subscription user: users(:newish)
+
+    assert_equal 1, users(:newish).characters.size
+    perform :receive, gameaction: "thickening_in_green"
+
+    assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
+    assert_equal "green_emergence", subscription.current_subgame_connection.twining_name
+    assert_equal 2, Character.where(:user_id => users(:newish).id).count
+  end
+
   def test_reach_out_unset
+    handle_basic_subscription user: users(:newish)
+
+    assert_equal 1, users(:newish).characters.size
+    assert_equal TitleSubgameConnection, subscription.current_subgame_connection.class
+    perform :receive, gameaction: "reach_out_one", charname: "blob"
+    assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
+
+    # No new character should be created
+    assert_equal 1, Character.where(:user_id => users(:newish).id).count
   end
 
   def test_reach_out_emergence
