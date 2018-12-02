@@ -1,0 +1,11 @@
+# db/seed.rb installs these, too. But having fixtures blanks the table, so it ignores that.
+# But it also allows *other* fixtures to link to subgames by name, which is convenient.
+
+none:
+  name: None
+
+entwined:
+  name: Entwined
+
+title:
+  name: Title

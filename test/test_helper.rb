@@ -2,10 +2,6 @@ ENV['RAILS_ENV'] ||= 'test'
 require_relative '../config/environment'
 require 'rails/test_help'
 
-NULL_SUBGAME_ID = Subgame.where(:name => "None").first.id
-TITLE_SUBGAME_ID = Subgame.where(:name => "Title").first.id
-ENTWINED_SUBGAME_ID = Subgame.where(:name => "Entwined").first.id
-
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all

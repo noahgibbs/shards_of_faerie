@@ -8,7 +8,7 @@ class TitleSubgameTest < SubgameTestCase
 
     assert_equal TitleSubgameConnection, subscription.current_subgame_connection.class
 
-    sgs = SubgameState.where(:character_id => nil, :user_id => users(:newbie).id, :subgame_id => TITLE_SUBGAME_ID).first
+    sgs = SubgameState.where(:character_id => nil, :user_id => users(:newbie).id, :subgame_id => subgames(:title).id).first
     assert sgs, "No title-screen subgame state created for new blank user!"
 
     # We should have exactly one message which replaces the game text. It should allow the thickening_in_green action,
@@ -59,7 +59,13 @@ class TitleSubgameTest < SubgameTestCase
     perform :receive, gameaction: "thickening_in_green"
 
     assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
+    assert_equal "green_emergence", subscription.current_subgame_connection.twining_name
     assert_equal 1, Character.where(:user_id => users(:newbie).id).count
   end
 
+  def test_reach_out_unset
+  end
+
+  def test_reach_out_emergence
+  end
 end

@@ -16,7 +16,7 @@ class PlayerActionChannelTest < ActionCable::Channel::TestCase
 
     assert_equal TitleSubgameConnection, subscription.current_subgame_connection.class
 
-    sgs = SubgameState.where(:character_id => nil, :user_id => users(:newbie).id, :subgame_id => NULL_SUBGAME_ID).first
+    sgs = SubgameState.where(:character_id => nil, :user_id => users(:newbie).id, :subgame_id => subgames(:none).id).first
     assert sgs, "No null-subgame state created for user!"
 
     # "transmissions" doesn't include anything broadcast via FooChannel.broadcast_to, even if we're subbed to it.

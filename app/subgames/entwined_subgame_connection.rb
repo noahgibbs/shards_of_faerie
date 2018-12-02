@@ -113,6 +113,8 @@ class EntwinedSubgameConnection < SubgameConnection
     @markdown_parser.render(content)
   end
 
+  attr_reader :twining_name
+
   def initialize(channel, twining_name)
     super(channel)
     @twining_name = twining_name
