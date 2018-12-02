@@ -74,6 +74,7 @@ class TitleSubgameTest < SubgameTestCase
     assert_equal 2, Character.where(:user_id => users(:newish).id).count
   end
 
+  # This character ("blob") has no current subgame ID, but has a default subgame ID (which is required.)
   def test_reach_out_unset
     handle_basic_subscription user: users(:newish)
 
@@ -87,5 +88,14 @@ class TitleSubgameTest < SubgameTestCase
   end
 
   def test_reach_out_emergence
+    handle_basic_subscription user: users(:lessnewish)
+
+    assert_equal 2, users(:lessnewish).characters.size
+    assert_equal TitleSubgameConnection, subscription.current_subgame_connection.class
+    perform :receive, gameaction: "reach_out_one", charname: "blorg"
+    assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
+
+    # No new character should be created
+    assert_equal 2, Character.where(:user_id => users(:lessnewish).id).count
   end
 end

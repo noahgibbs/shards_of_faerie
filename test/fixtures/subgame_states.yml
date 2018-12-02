@@ -20,3 +20,5 @@ sgs_lessnewish_1:
     default_subgame_id:
       <%= ActiveRecord::FixtureSet.identify(:blorg) %>: <%= ActiveRecord::FixtureSet.identify(:entwined) %>
       <%= ActiveRecord::FixtureSet.identify(:blam) %>: <%= ActiveRecord::FixtureSet.identify(:entwined) %>
+    last_subgame_id:
+      <%= ActiveRecord::FixtureSet.identify(:blorg) %>: <%= ActiveRecord::FixtureSet.identify(:entwined) %>
