@@ -128,10 +128,10 @@ class EntwinedSubgameConnection < SubgameConnection
       if @transitions.include?(data["passageaction"])
         move_to_passage data["passageaction"]
       else
-        STDERR.puts "Entwined: received unexpected passage action: #{data.inspect}"
+        Rails.logger.warn "Entwined: received unexpected passage action: #{data.inspect}"
       end
     else
-      STDERR.puts "Entwined: received unexpected action: #{data.inspect}"
+      Rails.logger.warn "Entwined: received unexpected action: #{data.inspect}"
     end
   end
 
@@ -159,13 +159,13 @@ class EntwinedContextObject
   attr_reader :subgame_state
 
   def initialize(twining_name:, channel:, user:, character:)
-    @@entwined_subgame_id = Subgame.where(name: "Entwined").first.id
+    @@entwined_subgame_id ||= Subgame.where(name: "Entwined").first.id
 
     @twining_name = twining_name
     @channel = channel
     @user = user
     @character = character
-    @subgame_state = SubgameState.where(character_id: character.id, subgame_id: @@entwined_subgame_id).first_or_create { |s| s.state = {} }
+    @subgame_state = SubgameState.where(user_id: user.id, character_id: character.id, subgame_id: @@entwined_subgame_id).first_or_create { |s| s.state = {} }
   end
 
   def set_passage(passage)
