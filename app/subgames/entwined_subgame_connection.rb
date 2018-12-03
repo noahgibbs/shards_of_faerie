@@ -36,47 +36,143 @@ class EntwinedSubgameConnection < SubgameConnection
   def self.twining_by_name(name)
     @twinings ||= {}
 
-    filename = File.join(Rails.root / "app/gamedata/twinings/#{name}.twining")
+    filename = File.join(Rails.root / "app/gamedata/twinings/#{name}.rb")
+
     if !@twinings[name.to_s] || (File.mtime(filename) > @twinings[name.to_s][:load_time])
       @twinings.delete(name.to_s)
-      load_twining_file(filename)
+      load_twining_rb_file(filename)
     end
 
     @twinings[name.to_s]
   end
 
-  def self.load_twining_file(filename)
+  class TwiningStyleContext
+    attr_reader :got_content
+    def content(content)
+      @got_content = content
+    end
+  end
+
+  class TwiningScriptContext
+    attr_reader :got_content
+    def content(content)
+      @got_content = content
+    end
+  end
+
+  class TwiningPassageContext
+    attr_reader :got_pid
+    attr_reader :got_tags
+    attr_reader :got_content
+
+    def initialize
+      @got_tags = []
+    end
+
+    def pid(pid)
+      @got_pid = pid
+    end
+
+    def tags(tags)
+      @got_tags = tags
+    end
+
+    def content(content)
+      @got_content = content
+    end
+  end
+
+  class TwiningContext
+    attr_reader :twining_name
+    attr_reader :startnode
+    attr_reader :idstring
+    attr_reader :styles
+    attr_reader :scripts
+    attr_reader :passages
+
+    def initialize
+      @styles = []
+      @scripts = []
+      @passages = []
+      @names = {}
+      @passage_num = 1
+    end
+
+    def name(name)
+      @twining_name = name
+    end
+
+    def start(name)
+      @startnode = name
+    end
+
+    def id(name)
+      @idstring = name
+    end
+
+    def style(content = nil, &block)
+      if block_given?
+        context = TwiningStyleContext.new
+        context.instance_eval(&block)
+        @styles << context.got_content
+      else
+        @styles << { content: content }
+      end
+    end
+
+    def script(content = nil, &block)
+      if block_given?
+        context = TwiningStyleContext.new
+        context.instance_eval(&block)
+        @scripts << context.got_content
+      else
+        @scripts << { content: content }
+      end
+    end
+
+    def passage(name, &block)
+      raise("Passage with duplicate name: #{name.inspect}!") if @names[name]
+      @names[name] = true
+
+      context = TwiningPassageContext.new
+      context.instance_eval &block
+      pid = context.got_pid || @passage_num
+      raise("Passage has no content block!") if context.got_content.nil?
+      @passages << {
+        pid: pid.to_s,
+        name: name.to_s,
+        tags: context.got_tags,
+        content: context.got_content
+      }
+      raise("Passage with duplicate pid: #{context.got_pid.inspect}!") if @names[pid]
+      @names[pid] = true
+
+      @passage_num += 1
+    end
+  end
+
+  def self.load_twining_rb_file(filename)
     @twinings ||= {}
 
-    doc = File.open(filename, "r") { |f| Nokogiri::XML(f) { |config| config } }
-    storydata = doc.css("tw-storydata")
-    twining_name = storydata.attribute("name").value
-    story_startnode = storydata.attribute("startnode").value
+    context = TwiningContext.new
+    context.instance_eval File.read(filename), filename
+
+    twining_name = context.twining_name
 
     raise("Twining with empty name for file #{filename.inspect}!") if twining_name.nil? || twining_name.empty?
     raise("Twining with duplicate name for file #{filename.inspect}!") if @twinings[twining_name.to_s]
 
-    styles = doc.css("tw-storydata style").map { |node| node.content }
-    scripts = doc.css("tw-storydata script").map { |node| node.content }
-
     passages = {}
-    doc.css("tw-storydata tw-passagedata").map do |node|
-      passage_content = node.content
-      passage = {
-        pid: node.attribute("pid").value,
-        name: node.attribute("name").value,
-        tags: node.attribute("tags").value,
-        content: passage_content,
-      }
+    context.passages.each do |passage|
       passages[passage[:pid]] = passage
       passages[passage[:name]] = passage
     end
     @twinings[twining_name.to_s] = {
       filename: filename,
       name: twining_name.to_s,
-      startnode: story_startnode,
-      styles: styles,
-      scripts: scripts,
+      startnode: context.startnode.to_s,
+      styles: context.styles,
+      scripts: context.scripts,
       passages: passages,
       load_time: Time.now,
     }
@@ -139,7 +235,7 @@ class EntwinedSubgameConnection < SubgameConnection
   protected
 
   def context_object
-    @context_object ||= EntwinedContextObject.new(twining_name: @twining_name, channel: @channel, user: @channel.current_user, character: @channel.current_character)
+    @context_object ||= EntwinedContext.new(twining_name: @twining_name, channel: @channel, user: @channel.current_user, character: @channel.current_character)
   end
 
   def move_to_passage(passage_name)
@@ -152,7 +248,7 @@ class EntwinedSubgameConnection < SubgameConnection
   end
 end
 
-class EntwinedContextObject
+class EntwinedContext
   attr_reader :twining_name
   attr_reader :channel
   attr_reader :user
