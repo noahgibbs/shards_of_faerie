@@ -114,6 +114,7 @@ class EntwinedSubgameConnection < SubgameConnection
   end
 
   attr_reader :twining_name
+  attr_reader :passage
 
   def initialize(channel, twining_name)
     super(channel)
@@ -142,7 +143,7 @@ class EntwinedSubgameConnection < SubgameConnection
   end
 
   def move_to_passage(passage_name)
-    raise("No such passage!") unless @twining[:passages][passage_name]
+    raise("No passage named #{passage_name.inspect}!") unless @twining[:passages][passage_name]
     @passage = @twining[:passages][passage_name]
     context_object.set_passage(passage_name)
     processed_content = self.class.process_passage_content @passage[:content], passage_name, @context_object

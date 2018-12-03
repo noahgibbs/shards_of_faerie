@@ -14,3 +14,8 @@ lessnewish:
   name: lessnewish
   encrypted_password: s00pers33krit
   email: lessnewish@nosuch.com
+
+emergent:
+  name: emergent
+  encrypted_password: s00pers33krit
+  email: emergent@nosuch.com
