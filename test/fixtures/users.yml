@@ -19,3 +19,8 @@ emergent:
   name: emergent
   encrypted_password: s00pers33krit
   email: emergent@nosuch.com
+
+emergent_formatting:
+  name: emergent_formatting
+  encrypted_password: s00pers33krit
+  email: emergent_formatting@nosuch.com

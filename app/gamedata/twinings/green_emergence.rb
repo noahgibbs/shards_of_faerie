@@ -133,12 +133,21 @@ end
 
 passage "Vicious Forest Creature" do
   content <<PASSAGE
-&lt;%
+<%
   appearance["body"] = "creature"
   # How do I set this character to automatically go to the forest initially?
-%&gt;
+%>
 
 You can feel your point of view narrowing and shifting. You can feel yourself being this creature.
 Your old point of view is left behind (lost?) and your new one awaits you.
+PASSAGE
+end
+
+passage "Formatting Test" do
+  content <<PASSAGE
+  Formatting Test (Content)
+  <% # This is a test
+  %>
+  &lt;thingie&gt;
 PASSAGE
 end

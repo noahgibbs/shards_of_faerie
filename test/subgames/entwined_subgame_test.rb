@@ -7,7 +7,6 @@ class EntwinedSubgameTest < SubgameTestCase
     handle_basic_subscription user: users(:newbie)
 
     assert_equal 1, transmissions.select { |msg| msg["action"] == "replace" }.size
-    transmissions.clear
 
     perform :receive, gameaction: "thickening_in_green"
     assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
@@ -18,7 +17,6 @@ class EntwinedSubgameTest < SubgameTestCase
 
   def test_reemergence
     handle_basic_subscription user: users(:emergent)
-    transmissions.clear
 
     perform :receive, gameaction: "reach_out_one", charname: "emer"
     assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
@@ -27,15 +25,18 @@ class EntwinedSubgameTest < SubgameTestCase
     assert_equal "Who am I?", subscription.current_subgame_connection.passage[:name]
   end
 
-#  #def test_reach_out_emergence
-#  #  handle_basic_subscription user: users(:lessnewish)
-#
-#  #  assert_equal 2, users(:lessnewish).characters.size
-#  #  assert_equal TitleSubgameConnection, subscription.current_subgame_connection.class
-#  #  perform :receive, gameaction: "reach_out_one", charname: "blorg"
-#  #  assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
-#
-#  #  # No new character should be created
-#  #  assert_equal 2, Character.where(:user_id => users(:lessnewish).id).count
-  #end
+  def test_formatting
+    handle_basic_subscription user: users(:emergent_formatting)
+
+    perform :receive, gameaction: "reach_out_one", charname: "emer_form"
+    assert_equal "green_emergence", subscription.current_subgame_connection.twining_name
+    assert_equal "Formatting Test", subscription.current_subgame_connection.passage[:name]
+    assert_equal 2, transmissions.select { |msg| msg["action"] == "replace" }.size
+    assert transmissions.detect { |msg|
+      msg["action"] == "replace" &&
+      msg["content"]["Formatting Test (Content)"] &&
+      !msg["content"]["<%"] &&
+      msg["content"]["&lt;thingie&gt;"]
+    }, "Can't find websocket message with title screen text!"
+  end
 end
