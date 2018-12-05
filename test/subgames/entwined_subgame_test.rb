@@ -38,6 +38,6 @@ class EntwinedSubgameTest < SubgameTestCase
       msg["content"]["Formatting Test (Content)"] &&
       !msg["content"]["<%"] &&
       msg["content"]["&lt;thingie&gt;"]
-    }, "Can't find websocket message with title screen text!"
+    }, "Can't find websocket message with formatting test text!"
   end
 end

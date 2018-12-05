@@ -56,8 +56,7 @@ Perhaps you're all three.
 PASSAGE
 end
 
-passage "I think I know who I am" do
-  content <<PASSAGE
+passage "I think I know who I am", <<PASSAGE
 Everything is hard to remember when <span class='green'>it's green</span>.
 
 But maybe you're coming out of the green, a bit?
@@ -65,10 +64,8 @@ But maybe you're coming out of the green, a bit?
 [[No, everything is still green|Awareness]]
 [[Yes, the green is starting to recede|Emergence]]
 PASSAGE
-end
 
-passage "Emergence" do
-  content <<PASSAGE
+passage "Emergence", <<PASSAGE
 The green was feeling very intense, and now it's dimming.
 
 Other colors exist a bit now, up ahead - grays, browns and a spot of twinkling blue.
@@ -77,10 +74,8 @@ Other colors exist a bit now, up ahead - grays, browns and a spot of twinkling b
 
 [[Follow the colors|Hills]]
 PASSAGE
-end
 
-passage "Hills" do
-  content <<PASSAGE
+passage "Hills", <<PASSAGE
 You can see different vistas from here, but only in a blurred, cloudy way. Some glow with
 a sort of green-white glowing presence, some are chaotic and violent, some are detached,
 some are serene, some are dark, some move quickly and seem to dart...
@@ -94,10 +89,8 @@ perhaps never.
 
 [[Drift back into the Green behind you|Awareness]]
 PASSAGE
-end
 
-passage "Chaos" do
-  content <<PASSAGE
+passage "Chaos", <<PASSAGE
 Here, you can see more of the chaos close-up.
 
 There are windows into wars, endless wars, in the distance.
@@ -109,10 +102,8 @@ of vicious little creatures, hunting each other and fighting. [[See through thei
 
 [[Drift far back into the Green behind you?|Awareness]]
 PASSAGE
-end
 
-passage "Vicious Forest" do
-  content <<PASSAGE
+passage "Vicious Forest", <<PASSAGE
 There are more points of view than you can possibly tease apart here - like an immense, changing tapestry of
 tiny eyes, hunting and watching. From here you can see an entire forest, all at once, but can remember no part
 of it.
@@ -129,10 +120,8 @@ that creature.
 
 [[Drift far back into the Green behind you?|Awareness]]
 PASSAGE
-end
 
-passage "Vicious Forest Creature" do
-  content <<PASSAGE
+passage "Vicious Forest Creature", <<PASSAGE
 <%
   appearance["body"] = "creature"
   # How do I set this character to automatically go to the forest initially?
@@ -141,13 +130,13 @@ passage "Vicious Forest Creature" do
 You can feel your point of view narrowing and shifting. You can feel yourself being this creature.
 Your old point of view is left behind (lost?) and your new one awaits you.
 PASSAGE
-end
 
-passage "Formatting Test" do
-  content <<PASSAGE
+passage "Purity", <<PASSAGE
+PASSAGE
+
+passage "Formatting Test", <<PASSAGE
   Formatting Test (Content)
   <% # This is a test
   %>
   &lt;thingie&gt;
 PASSAGE
-end

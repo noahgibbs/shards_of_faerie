@@ -130,19 +130,28 @@ class EntwinedSubgameConnection < SubgameConnection
       end
     end
 
-    def passage(name, &block)
+    def passage(name, desc = nil, &block)
       raise("Passage with duplicate name: #{name.inspect}!") if @names[name]
       @names[name] = true
 
-      context = TwiningPassageContext.new
-      context.instance_eval &block
-      pid = context.got_pid || @passage_num
-      raise("Passage has no content block!") if context.got_content.nil?
+      if block_given?
+        raise("You can't provide an inline description *and* a block (name: #{name.inspect})!") if desc
+        context = TwiningPassageContext.new
+        context.instance_eval &block
+        pid = context.got_pid || @passage_num.to_s
+        raise("Passage has no content block!") if context.got_content.nil?
+        content = context.got_content
+        tags = context.got_tags
+      else
+        tags = []
+        content = desc
+        pid = @passage_num.to_s
+      end
       @passages << {
         pid: pid.to_s,
         name: name.to_s,
-        tags: context.got_tags,
-        content: context.got_content
+        tags: tags,
+        content: content
       }
       raise("Passage with duplicate pid: #{context.got_pid.inspect}!") if @names[pid]
       @names[pid] = true
