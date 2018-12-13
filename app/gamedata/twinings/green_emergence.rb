@@ -123,7 +123,7 @@ PASSAGE
 
 passage "Vicious Forest Creature", <<PASSAGE
 <%
-  appearance["body"] = "creature"
+  appearance["body"] = "unseelie forest"
   # How do I set this character to automatically go to the forest initially?
 %>
 
@@ -132,6 +132,26 @@ Your old point of view is left behind (lost?) and your new one awaits you.
 PASSAGE
 
 passage "Purity", <<PASSAGE
+A white glow, barely green at all close up, surrounds you. You can feel it under the land around you,
+and pulsing above and around in every direction ahead.
+
+It's hard to see much farther ahead with such a powerful glow. It's blinding.
+
+You know, or perhaps remember, that you can narrow your eyes and find a viewpoint ahead, even if you
+can't quite see it. [[Drift into a viewpoint?|Purity of Form]]
+
+[[Drift away from the white glow?|Hills]]
+
+[[Drift far back into the Green behind you?|Awareness]]
+PASSAGE
+
+passage "Purity of Form", <<PASSAGE
+<%
+  appearance["body"] = "seelie hall"
+%>
+
+You can feel your point of view narrowing and shifting. You can feel yourself being... something.
+Your old point of view is left behind (lost?) and your new one awaits you.
 PASSAGE
 
 passage "Formatting Test", <<PASSAGE
