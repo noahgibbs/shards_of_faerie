@@ -1,3 +1,5 @@
+// These functions are for the title screen, the background and really simple built-in games like Entwined.
+
 $(function() {
     $(".client-area").on("click", ".action-button", function(event) {
         var act = $(this).attr("click-action");
