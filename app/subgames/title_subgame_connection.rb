@@ -17,7 +17,7 @@ class TitleSubgameConnection < SubgameConnection
       replace_html_with_template(".client-area", "title/one_char", locals: { characters: characters })
     else
       # Multiple characters in existence
-      replace_html_with_template(".client-area", "title/multiple_chars", locals: { characters: characters })
+      replace_html_with_template(".client-area", "title/multiple_chars", locals: { characters: characters, current_character: @channel.current_character })
     end
   end
 
@@ -68,7 +68,7 @@ class TitleSubgameConnection < SubgameConnection
 
       @channel.set_subgame_connection EntwinedSubgameConnection.new(@channel, "green_emergence")
     elsif data["gameaction"] == "reach_out_one"
-      char_name = data["charname"]
+      char_name = data["args"]
       character = Character.where(:user_id => @channel.current_user.id, :name => char_name).first
       @channel.switch_to_character character
       switch_to_current_subgame character

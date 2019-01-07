@@ -18,4 +18,3 @@ App.player_action = App.cable.subscriptions.create("PlayerActionChannel",
             //$(".chatarea").html(App.chatData.join("<br/>"));
         }
     });
-console.log("Setting up WebSocket for player actions.");

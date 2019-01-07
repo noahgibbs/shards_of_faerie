@@ -18,7 +18,7 @@ class EntwinedSubgameTest < SubgameTestCase
   def test_reemergence
     handle_basic_subscription user: users(:emergent)
 
-    perform :receive, gameaction: "reach_out_one", charname: "emer"
+    perform :receive, gameaction: "reach_out_one", args: "emer"
     assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
     assert_equal "green_emergence", subscription.current_subgame_connection.twining_name
     assert_equal 1, Character.where(:user_id => users(:emergent).id).count  # Should not create a character
@@ -29,7 +29,7 @@ class EntwinedSubgameTest < SubgameTestCase
     handle_basic_subscription user: users(:emergent_formatting)
     connection.transmissions.clear
 
-    perform :receive, gameaction: "reach_out_one", charname: "emer_form"
+    perform :receive, gameaction: "reach_out_one", args: "emer_form"
     assert_equal "green_emergence", subscription.current_subgame_connection.twining_name
     assert_equal "Formatting Test", subscription.current_subgame_connection.passage[:name]
     assert_equal 1, transmissions.select { |msg| msg["action"] == "replace" }.size

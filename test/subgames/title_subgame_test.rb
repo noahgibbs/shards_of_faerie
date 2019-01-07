@@ -80,7 +80,7 @@ class TitleSubgameTest < SubgameTestCase
 
     assert_equal 1, users(:newish).characters.size
     assert_equal TitleSubgameConnection, subscription.current_subgame_connection.class
-    perform :receive, gameaction: "reach_out_one", charname: "blob"
+    perform :receive, gameaction: "reach_out_one", args: "blob"
     assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
 
     # No new character should be created
@@ -92,7 +92,7 @@ class TitleSubgameTest < SubgameTestCase
 
     assert_equal 2, users(:lessnewish).characters.size
     assert_equal TitleSubgameConnection, subscription.current_subgame_connection.class
-    perform :receive, gameaction: "reach_out_one", charname: "blorg"
+    perform :receive, gameaction: "reach_out_one", args: "blorg"
     assert_equal EntwinedSubgameConnection, subscription.current_subgame_connection.class
 
     # No new character should be created
