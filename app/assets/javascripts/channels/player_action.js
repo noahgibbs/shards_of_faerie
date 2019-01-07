@@ -5,12 +5,20 @@ App.player_action = App.cable.subscriptions.create("PlayerActionChannel",
         disconnected: function() {
         },
         received: function(data) {
-            console.log("received pa data", data);
             if(data.action === "replace") {
                 $(data.selector).html(data.content);
                 return;
             }
-            console.log("Unrecognized action in data:", data);
+            if(data.action === "subgame") {
+                if(data.subgame === "eventing") {
+                    return window.EventingSubgame.receive(data);
+                }
+                console.log("Unknown subgame in subgame action: ", data.subgame)
+                return;
+            }
+            //if(data.action === "") {
+            //}
+            console.log("Unrecognized action in data: ", data);
             //if(App.chatData.length > 19) {
             //    App.chatData.shift();
             //}
