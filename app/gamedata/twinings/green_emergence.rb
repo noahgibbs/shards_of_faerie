@@ -61,7 +61,7 @@ Everything is hard to remember when <span class='green'>it's green</span>.
 
 But maybe you're coming out of the green, a bit?
 
-[[No, everything is still green|Awareness]]
+[[No, everything is still green|Awareness]] <br/>
 [[Yes, the green is starting to recede|Emergence]]
 PASSAGE
 
