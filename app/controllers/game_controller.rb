@@ -1,9 +1,7 @@
 class GameController < ApplicationController
-  before_action :authenticate_user!, :only => [ :game ]
+  #before_action :authenticate_user!, :only => [ :game ]
 
   def index
-    unless current_user
-      redirect_to "/"
-    end
+    current_or_guest_user
   end
 end

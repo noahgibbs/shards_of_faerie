@@ -1,3 +1,4 @@
 TODO
 
 * Fix up guest users better: https://github.com/plataformatec/devise/wiki/How-To:-Create-a-guest-user
+* Add warning to user creation page that guest user will be logged out (and make it work, or fix)
