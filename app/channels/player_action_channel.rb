@@ -21,7 +21,7 @@ class PlayerActionChannel < ApplicationCable::Channel
 
   def initialize(*args)
     super
-    @@null_subgame_id = TitleSubgameConnection.subgame_id_by_name("None")
+    @@null_subgame_id ||= TitleSubgameConnection.subgame_id_by_name("None")
   end
 
   # Called after successful subscription

@@ -1,4 +1,5 @@
 // These functions are for the title screen, the background and really simple built-in games like Entwined.
+// This file will also contain shared functionality to coordinate across games, or which game is active.
 
 $(function() {
     $(".client-area").on("click", ".action-button", function(event) {
