@@ -19,8 +19,9 @@ class PlayerActionChannel < ApplicationCable::Channel
   attr_reader :current_subgame_connection
   attr_reader :current_character
 
-  def initialize(*args)
+  def initialize(connection, identifier, params)
     super
+    @params = params
     @@null_subgame_id ||= TitleSubgameConnection.subgame_id_by_name("None")
   end
 
@@ -50,7 +51,11 @@ class PlayerActionChannel < ApplicationCable::Channel
       switch_to_character characters.first
     end
 
-    set_subgame_connection TitleSubgameConnection.new(self)
+    if @params["subgame"] == "eventing"
+      set_subgame_connection EventingSubgameConnection.new(self, "")
+    else
+      set_subgame_connection TitleSubgameConnection.new(self)
+    end
   end
 
   def set_subgame_connection(csc)

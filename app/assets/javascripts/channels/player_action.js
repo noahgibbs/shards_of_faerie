@@ -1,4 +1,18 @@
-App.player_action = App.cable.subscriptions.create("PlayerActionChannel",
+function getUrlParameter(name) {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+};
+
+// If the 'subgame' query parameter is present, it may affect how we connect.
+// So we pass it through.
+
+App.player_action = App.cable.subscriptions.create(
+    {
+        channel: "PlayerActionChannel",
+        subgame: getUrlParameter("subgame")
+    },
     {
         connected: function() {
         },
