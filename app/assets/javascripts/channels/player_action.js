@@ -23,6 +23,10 @@ App.player_action = App.cable.subscriptions.create(
                 $(data.selector).html(data.content);
                 return;
             }
+            if(data.action === "run_code") {
+                eval(data.code);
+                return;
+            }
             if(data.action === "subgame") {
                 if(data.subgame === "eventing") {
                     return window.EventingSubgame.receive(data);

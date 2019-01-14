@@ -31,4 +31,8 @@ class SubgameConnection
     tmpl = Erubis::Eruby.new(File.read filename)
     replace_html(elt_selector, tmpl.evaluate(locals))
   end
+
+  def run_js(js_code)
+    data_send(action: "run_code", code: js_code)
+  end
 end

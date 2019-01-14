@@ -34,10 +34,6 @@ class AbstractModel {
         this.time = initialTime;
     }
 
-    get time() {
-        return this.time;
-    }
-
     update(timestamp) {
         timeDiff = timestamp - this.time;
         // Sometimes, on some browsers, requestAnimationFrame can run backwards. If so, don't update.
@@ -72,7 +68,7 @@ class EulerObjectModel extends AbstractModel {
     constructor(initialTime, diffFunction) {
         super(initialTime);
         this.diffFunction = diffFunction;
-        this.variables = {}
+        this.vars = {}
     }
 
     get actions() {
@@ -85,15 +81,11 @@ class EulerObjectModel extends AbstractModel {
     }
 
     get variables() {
-        return this.variables;
+        return this.vars;
     }
 
     setVariables(variables) {
-        this.variables = variables;
-    }
-
-    get diffFunction() {
-        return this.diffFunction;
+        this.vars = variables;
     }
 
     advanceTime(timeDiff, timestamp) {
@@ -111,44 +103,36 @@ class EulerObjectModel extends AbstractModel {
 class SimpleGameModel extends EulerObjectModel {
     constructor(initialTime) {
         var initialState = {
-            burnedout: 0,
-            inspired: 20
+            exhausted: 0,
+            strong: 0,
+            fashionable: 0,
         };
         var derivative = function(vars, delta, ts) {
             var deriv = {
-                burnedout: -1,
-                inspired: 1
+                exhausted: vars.exhausted > 0 ? -1.0 : 0.0,
+                placeholder: 0.0
             };
         }
         super(initialTime, derivative);
-        setVariables(initialState);
+        this.setVariables(initialState);
     }
 
     get actions() {
         return {
-            vacation: {
+            strength_training: {
             },
-            project: {
+            posing: {
             },
-            study: {
-            },
-            grindwork: {
-
-            }
         };
     }
 
     takeAction(act) {
-        if("vacation" === act) {
-            this.variables.inspired += 5;
-            this.variables.burnedout -= 5;
-        } else if ("project" === act) {
-            this.variables.burnedout += 2;
-            this.variables.inspired += parseInt(Math.random(3));
-        } else if ("study" === act) {
-            this.variables.burnedout += 1;
-        } else if ("grindwork" === act) {
-            this.variables.burnedout += 3;
+        if("strength_training" === act) {
+            this.variables.exhausted += 5;
+            this.variables.strong += 2;
+        } else if ("posing" === act) {
+            this.variables.exhausted += 2;
+            this.variables.fashionable += parseInt(Math.random(3));
         } else {
             throw("No such action as '" + act + "'!");
         }
