@@ -3,6 +3,9 @@
 window.EventingSubgame = {
     activate: function(model) {
         window.EventingSubgame.models.push(model);
+        if(model.setupActionUI) {
+            model.setupActionUI();
+        }
         window.EventingSubgame.startHandler();
         window.EventingSubgame.activated++;
     },
@@ -68,6 +71,11 @@ class AbstractModel {
 // in most cases, since floating-point arithmetic is *not* exact.
 //
 // What it does give is, again, simplicity.
+//
+// EulerObjectModel defines actions, and can set up a simple default UI based on them using
+// setupActionUI. A more developed interface will want to override setupActionUI instead of
+// using the parent class, but you can prototype quickly by not overriding it and playing with
+// the model mathematically before making it look and feel better.
 class EulerObjectModel extends AbstractModel {
     constructor(initialTime, diffFunction) {
         super(initialTime);
@@ -82,6 +90,17 @@ class EulerObjectModel extends AbstractModel {
     takeAction(act) {
         // Need to implement
         throw("Implement me!");
+    }
+
+    setupActionUI() {
+        var acts = this.actions;
+        _.forOwn(acts, function(action_name, action_obj) {
+            $(".actions").append("<div class='default_action'>" + action_obj.description + "</div>");
+        });
+        var vars = this.variables;
+        _.forOwn(vars, function(var_name, var_value) {
+            $(".statistics").append("<div class='default_statistic'>" + var_name + "</div>")
+        });
     }
 
     get variables() {
@@ -124,8 +143,10 @@ class SimpleGameModel extends EulerObjectModel {
     get actions() {
         return {
             strength_training: {
+                description: "Strength Training"
             },
             posing: {
+                description: "Posing"
             },
         };
     }
