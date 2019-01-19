@@ -11,7 +11,7 @@ class EventingSubgameConnection < SubgameConnection
     #@eventing = self.class.eventing_by_name eventing_name
     replace_html_with_template(".client-area", "eventing/index")
 
-    run_js "window.simpleEventing = new SimpleGameModel(0.0); window.EventingSubgame.activate(window.simpleEventing);"
+    run_js "window.simpleEventing = new SimpleGameModel(0.0); window.EventingSubgame.activate(window.simpleEventing);console.log('activated model');"
   end
 
   def receive(data)

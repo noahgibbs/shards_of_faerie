@@ -2,6 +2,7 @@
 
 window.EventingSubgame = {
     activate: function(model) {
+        window.EventingSubgame.models.push(model);
         window.EventingSubgame.startHandler();
         window.EventingSubgame.activated++;
     },
@@ -18,6 +19,9 @@ window.EventingSubgame = {
         window.EventingSubgame.models.forEach(function(m) {
             m.update(timestamp);
         });
+
+        // Have to reactivate or we don't get the next animation frame
+        window.EventingSubgame.startHandler();
     },
     // Receive a subgame event from the server
     receive: function(data) {
@@ -35,14 +39,14 @@ class AbstractModel {
     }
 
     update(timestamp) {
-        timeDiff = timestamp - this.time;
+        var timeDiff = timestamp - this.time;
         // Sometimes, on some browsers, requestAnimationFrame can run backwards. If so, don't update.
         if(timeDiff < 0) {
             this.time = timestamp;
             return;
         }
 
-        advanceTime(timeDiff, timestamp);
+        this.advanceTime(timeDiff, timestamp);
 
         // After calculations, update time
         this.time = timestamp;
@@ -96,7 +100,7 @@ class EulerObjectModel extends AbstractModel {
             newState[key] += timeDiff * value;
         });
 
-        this.variables = newState;
+        this.setVariables(newState);
     }
 }
 
