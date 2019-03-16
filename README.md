@@ -8,4 +8,4 @@ This is a derelict playground, not a paid-for amusement park. If you find someth
 
 ## Requirements
 
-In general, I try to keep everything declared in the Gemfile. But, y'know, no guarantees.
+In general, I try to keep everything declared in the Gemfile. But, y'know, no guarantees. If me running with Bundler won't catch the problem, I may not know about it.
