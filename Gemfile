@@ -7,7 +7,7 @@ ruby '2.5.0'
 gem 'rails', '~> 5.2.0'
 gem 'pg'
 gem 'puma', '~> 3.11'
-gem 'devise'
+gem 'devise', '~> 4.6.0'
 
 # Used in channels for HTML template output
 gem 'erubis'
