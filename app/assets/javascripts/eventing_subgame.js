@@ -48,6 +48,7 @@ class AbstractModel {
             this.time = timestamp;
             return;
         }
+        timeDiff *= 0.001; // This is in milliseconds, convert to seconds
 
         this.advanceTime(timeDiff, timestamp);
 
@@ -135,6 +136,7 @@ class SimpleGameModel extends EulerObjectModel {
                 exhausted: vars.exhausted > 0 ? -1.0 : 0.0,
                 placeholder: 0.0
             };
+            return deriv;
         }
         super(initialTime, derivative);
         this.setVariables(initialState);
@@ -157,7 +159,7 @@ class SimpleGameModel extends EulerObjectModel {
             this.variables.strong += 2;
         } else if ("posing" === act) {
             this.variables.exhausted += 2;
-            this.variables.fashionable += parseInt(Math.random(3));
+            this.variables.fashionable += parseInt(Math.random() * 3.0);
         } else {
             throw("No such action as '" + act + "'!");
         }
